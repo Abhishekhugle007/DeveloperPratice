@@ -1,6 +1,11 @@
 :root{
     --body-backgroud:#f4f4f9;
     --btn-primary:#5cabff;
+    --btn-secondary:#bfca29;
+    --btn-active:#4a90e2;
+    --btn-edit: #ffd700;
+    --btn-completed:#32cd32;
+    --btn-delete:#ff6347;
 }
 
 *{
@@ -10,7 +15,7 @@
 body{
     margin: 0;
     padding: 0;
-    background-color: var(--body-backgroud);
+    background-color: var(--body-background);
     
 }
 .container{
@@ -56,4 +61,47 @@ li:hover{
 li:last-child{
     border-bottom: none;
 }
+
+.filterBtn , .editBtn, .deleteBtn, .completedBtn{
+    margin: 5px;
+    padding: 10px 15px;
+    background-color: var(--btn-secondary);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.editBtn{
+    background-color: var(--btn-edit);
+}
+
+.deleteBtn{
+    background-color: var(--btn-delete);
+}
+
+.completedBtn{
+    background-color: var(--btn-active);
+    color: white;
+    border: none;
+
+}
+
+.filterBtn:hover{
+    background-color: var(--btn-active);
+}
+
+.todoItem{
+    letter-spacing: 1px;
+}
+
+.todoItem{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+
 
