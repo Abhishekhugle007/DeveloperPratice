@@ -21,18 +21,18 @@ function executeFilterAction(event){
     const  todos =loadTodos();
     if(value == "all"){
         console.log(todoList)
-        todos.todoList.forEach((todo) =>{
-        appendTodoInHtml(todo);
+        todos.todoList.forEach((todo, index) =>{
+        appendTodoInHtml(todo, index);
     })
     }else if(value =="pending"){
-         todos.todoList.forEach((todo) =>{
+         todos.todoList.forEach((todo, index) =>{
             if(todo.isCompleted != true)
-        appendTodoInHtml(todo);
+        appendTodoInHtml(todo, index);
     })
     }else{
-          todos.todoList.forEach((todo) =>{
+          todos.todoList.forEach((todo, index) =>{
             if(todo.isCompleted == true)
-        appendTodoInHtml(todo);
+        appendTodoInHtml(todo, index);
     })
     }
 }
