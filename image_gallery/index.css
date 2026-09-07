@@ -1,0 +1,152 @@
+html {
+    box-sizing: border-box;
+}
+
+* {
+    box-sizing: inherit;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+}
+
+.image {
+    background-attachment: fixed;
+    background-size: contain;
+}
+
+.section-light {
+    background-color: white;
+    color: black;
+    overflow: scroll;
+    height: 120px;
+}
+
+#text-box {
+    height: 10px;
+}
+
+.section-dark {
+    background-color: #282e34;
+    color: white;
+    overflow: scroll;
+}
+
+.first-image {
+    background-image: url(./images/imag7.jpeg);
+    min-height: 500px;
+    background-repeat: no-repeat;
+    background-size: 101%;
+}
+
+.second-image {
+    background-image: url(./images/img\ 5.jpg);
+    min-height: 500px;
+    border-radius: 4px 3px 6px / 2px 4px;
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+.third-image {
+    background-image: url(./images/image2.avif);
+    min-height: 500px;
+    background-size: 100%;
+}
+
+.fourth-image {
+    background-image: url(./images/imag8.jpeg);
+    min-height: 500px;
+    background-size: 100%;
+}
+
+.fifth-image {
+    background-image: url(./images/imag11.webp);
+    min-height: 500px;
+    background-size: 100%;
+}
+
+.text-content {
+    font-size: xx-large;
+    color: white;
+    text-transform: uppercase;
+    background-color: #111;
+    padding: 9px;
+    width: auto;
+    text-align: center;
+}
+
+/* Popup */
+#popup {
+    position: absolute;
+    top: 0;
+    font-size: xx-large;
+    color: aliceblue;
+    width: 100%;
+    height: 100%;
+}
+
+#popup-text {
+    position: absolute;
+    top: 22%;
+    right: 88%;
+    left: 78%;
+    font-style: italic;
+    font-size: 66px;
+}
+
+#popup-image {
+    position: absolute;
+    top: 22%;
+    right: 77%;
+    left: 10%;
+    bottom: 70%;
+    font-style: italic;
+    font-size: 66px;
+}
+@media screen and (max-width: 600px) {
+
+    .image {
+        background-attachment: scroll;
+    }
+
+    .first-image,
+    .second-image,
+    .third-image,
+    .fourth-image,
+    .fifth-image {
+        min-height: 300px;
+        background-size: cover;
+        background-position: center;
+    }
+
+    .text-content {
+        font-size: 24px;
+        width: 90%;
+        margin: auto;
+        padding: 8px;
+    }
+
+    .section-light,
+    .section-dark {
+        height: auto;
+        padding: 20px;
+        overflow: hidden;
+    }
+
+    .section-light h2,
+    .section-dark h2 {
+        font-size: 22px;
+    }
+
+    .section-light p,
+    .section-dark p {
+        font-size: 16px;
+        line-height: 1.5;
+    }
+
+
+    #popup {
+        display: none;
+    }
+}

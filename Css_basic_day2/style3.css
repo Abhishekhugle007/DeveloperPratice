@@ -1,0 +1,16 @@
+h1{
+    color:red;
+    text-decoration:underline;
+    background-color:aqua;
+    text-align: centre;
+    text-transform: uppercase;
+    letter-spacing:20px;/*to add space between letters of the word */   
+}
+
+p{
+    color:black;
+    line-height:30px;
+    word-spacing:10px;
+    text-indent:10px;
+    
+}

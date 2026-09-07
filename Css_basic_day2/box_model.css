@@ -1,0 +1,39 @@
+html{
+    box-sizing: border-box;
+}
+*
+{
+   box-sizing:inherit;
+}
+#div1 
+{
+    border:solid red 5px;
+    padding:10px;
+    margin-bottom:5px;
+    width:400px;
+     min-height:40px;
+     max-height:300px ; 
+     background-color: aqua !important; 
+}
+
+#div2{
+    border:solid yellow 5px;
+    padding :10px;
+    margin-bottom:5px;
+    width: 372px;
+    height: 112px;
+    box-sizing: content-box;
+
+}
+#div3
+{
+    border:solid green 5px;
+    padding:10px;
+    margin-bottom: 5px;
+    width: 100px;
+    height: 60px;
+}
+#div1
+{
+    background-color: yellow;
+}

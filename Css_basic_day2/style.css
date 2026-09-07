@@ -1,0 +1,27 @@
+
+*{
+    background-color: yellow;
+}
+
+.heading {
+    color:red;
+    font-weight:bolder;
+}
+#middle ,p {
+    color:blue;
+}
+
+h1,p {
+    font-size: xx-large;
+}
+
+/* this is some comment */
+ /*p {
+    color:green; 
+} 
+*/
+
+/* this is 
+multi line 
+comment 
+*/
