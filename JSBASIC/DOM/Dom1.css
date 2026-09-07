@@ -41,5 +41,19 @@ h1{
 
 }
 
+ul{
+    list-style-type: none;
+    padding: 0;
 
+}
+li{
+    padding: 10px;
+    border-bottom: 1px solid #dddd;
+}
+li:hover{
+
+}
+li:last-child{
+    border-bottom: none;
+}
 
