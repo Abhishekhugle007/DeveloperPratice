@@ -111,8 +111,8 @@ document.addEventListener("DOMContentLoaded",() =>{
     }
 
     submitButton.addEventListener("click",(event) =>{
-        const todoText =todoInput.value;
-        if(todoText == ' '){
+        const todoText = todoInput.value.trim();
+        if(todoText === ''){
             alert("Please write something for the todo");
         }
         else {
