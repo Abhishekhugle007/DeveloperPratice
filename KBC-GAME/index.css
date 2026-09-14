@@ -9,7 +9,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url("./assets/giphy.gif");
+    background-image: url("./assest/giphy.gif");
     background-size: cover;
     background-position: center;
 }
@@ -74,7 +74,7 @@
 .questionArea {
     width: 75%;
     height: 100vh;
-    background-image: url("./assets/bg.jpeg");
+    background-image: url("./assest/bg.jpeg");
     background-position: center;
     background-size: cover;
     display: flex;

@@ -1,0 +1,18 @@
+"use strict";
+var str = "Abhishekh";
+var str2 = "Hello how are you";
+var str3 = `And what about you?`;
+var age = 30;
+var userName = "Abhi";
+var info = `my name is  ${userName} and age is ${age} years`;
+console.log(info);
+var num = 100;
+var data = num.toString();
+var data = " " + num;
+// var boolData =true;
+// var data:string =boolData.toString();
+console.log(data);
+var item = true;
+var other;
+other = item;
+console.log(other);
