@@ -1,0 +1,35 @@
+/* .hover-box {
+  width: 100px;
+  color: brown;
+  background-color: aquamarine;
+  text-align: center;
+  line-height: 100px;
+  margin-top: 20px;
+}
+ */
+
+h1{
+  
+  text-align: center;
+  margin-top: 40px;
+}
+.count{
+  font-size: 48px;
+  text-align: center;
+  margin:20px 0;
+}
+.btns{
+  display: flex;
+  gap:10px;
+  justify-content: center;
+}
+.reset{
+  background-color: rgb(0, 50, 92);
+}
+button{
+ padding: 10px 18px;
+ background-color: red;
+ color:white;
+ border-radius:6px;
+ cursor: pointer;
+ }
