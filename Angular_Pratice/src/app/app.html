@@ -167,6 +167,190 @@
   <p>{{item}}</p>
 } -->
 
-@for(item of items; track $index){
+<!-- @for(item of items; track $index){
   <p>{{$index+1}},{{item}}</p>
-}
+} -->
+
+
+<!-- @for(u of users; track u .name){
+  <div>
+    <h4>
+      {{u.name}}
+    </h4>
+    <p>Age:{{u.age}}</p>
+  </div>
+} -->
+
+
+<!-- 
+@for(item of items; track $index; let i = $index){
+  <p>{{item}}</p>
+  <button (click)=" removeItem(i)">Delete</button>
+} -->
+
+
+<!-- @for(num of numbers; track num){
+  @if(num % 2 === 0){
+    <p>{{num}} is Even</p>
+  }
+  @else{
+    <p>{{num}} is odd</p>
+  }
+} -->
+
+<!--  index 
+
+@for(item of items; track $index){
+  <p>{{$index+1}} -> {{item}}</p>
+} -->
+
+<!-- count 
+
+@for(item of items; track $index){
+  <P>{{$index}} -> {{item}}</P>
+  <p>Total Count :{{$count}}</p>
+} -->
+
+
+<!-- first item
+
+@for(item of items;track $index){
+   @if($first){
+    <p>First Item: {{item}} </p>
+   }@else{
+    <p>{{item}}</p>
+   }
+} -->
+
+<!-- last item
+@for(item of items;track $index){
+   @if($last){
+    <p>Last Item: {{item}} </p>
+   }@else{
+    <p>{{item}}</p>
+   }
+} -->
+
+<!-- 
+@for (item of items; track $index) {
+  <p [style.background]="$odd ? 'red' : 'yellow'">
+    {{ item }}
+  </p>
+} -->
+
+
+<!-- @for(item of numbers; track $index){
+  <div>
+    <strong>{{item}}</strong>
+    <span> | index :{{$index}}</span>
+     <span> | Even :{{$index}}</span>
+      <span> | odd :{{$index}}</span>
+       <span> | Last :{{$index}}</span>
+       <span> | count: {{$count}}</span>
+  </div>
+} -->
+
+<!-- 
+<h2>Signal</h2>
+ <p>Value: {{val}}</p> 
+
+<p>Count: {{count()}}</p>
+<button  (click)="increment()">+</button>
+<button  (click)="decrement()">-</button>
+<button (click)="reset()">reset</button>
+
+
+<button (click)="count.set(50)">Change Signal</button>  -->
+
+
+<!-- 
+<h1>{{count()}}</h1>
+<h2>{{user().name}},{{user().age}}</h2>
+
+
+<h3>Numbers: {{number()}}</h3>
+<button (click)="directUpdate()">DirectUpdate</button>
+
+<button (click)="addNumber()">Add Number</button>  -->
+
+
+<!-- <h1>{{count()}}</h1>
+<h2>{{doubleCount()}}</h2>
+<h3>{{tripleCount()}}</h3>
+
+<button  (click)="increment()">Increment</button> -->
+
+<!-- <h1>{{fullName()}}</h1> -->
+
+<!-- <h1>{{total()}}</h1> -->
+<!-- 
+<h1>Increment</h1>
+<button (click)="increment()">increment</button> -->
+
+<!-- <h1>Toggle Button</h1>
+<button (click)="toggle()">Toggle</button> -->
+
+<!-- 
+<button (click)="showMessage()">Save</button>
+
+@if(message()){
+  <p>{{message()}}</p>
+} -->
+
+
+<!-- <h1>{{lName | uppercase}}</h1>
+<h1>{{uName  | lowercase }} </h1>
+
+<p>Short Date: {{today  | date:'short'}}</p>
+<p>Full Date: {{today | date: 'fullDate'}}</p>
+
+<p>INR: {{amount | currency: 'INR'}}</p>
+ -->
+
+<!-- <h1>{{count()}}</h1>
+<h1>{{name()}}</h1>
+
+<button (click)="setCount()">Set Count</button> -->
+
+<!-- <h1>{{count()}}</h1>
+<button (click)="increment()" >Increment</button> -->
+
+<!-- <input [(ngModel)]="username" placeholder="Enter your name"/>
+
+<p>{{username}}</p> -->
+<!-- 
+<input [value]="name()" (input)="name.set($event.target.value)">
+
+<p>{{name()}}</p> -->
+
+<!-- 
+<input [value]="user().name" (input)="updateName($event.target.value) "placeholder="name">
+<br><br>
+<p>Update Name: {{user().name}}</p>
+
+<hr>
+
+<p>Update Age: {{user().age}}</p>
+<button (click)="updateAge()">Increase Age</button> -->
+
+<!-- Todo 
+<h2>Todo App</h2>
+<input placeholder="Write Something..."
+[value]="newTodo()"
+(input)="newTodo.set($event.target.value)">
+
+<button (click)="addTodo()">Add</button>
+<hr>
+<ul>
+  @for(todo of todos(); track $index){
+         <li>
+          <span>{{$index +1}}</span>
+
+          <span (click)="toggleTodo($index)" [style.text-decoration]="todo.done ? 'line-through' :'none'">{{todo.text}}</span>
+          
+          <button (click)="editTodo($index)">Edit</button>
+          <button (click)="deleteTodo($index)">Delete</button>
+
+         </li>
+  }
+</ul> -->
