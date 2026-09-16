@@ -28,11 +28,145 @@
 <div (mouseover)="onHover()" (mouseleave)="onLeave()" class="hover-box" >Hover Text</div>
  -->
 
-<h1>Simple Counter</h1>
+<!-- <h1>Simple Counter</h1>
 <p class="count">{{counter}}</p>
 
 <div class="btns">
 <button (click)="handleAdd()">+</button>
 <button (click)="handleMinus()">-</button>
 <button (click)="handleReset()"class="reset">Reset</button>
-</div>
+</div> -->
+
+<!-- 
+<p>Your Name: {{name}}</p>
+<input (input)="updateName($event.target.value)" placeholder="Enter Name">
+
+
+<p>Your City: {{city}}</p>
+<input (input)="city=$event.target.value" placeholder="Enter the  city">
+
+<p>Your Email: {{email}}</p>
+<input #userInput placeholder="Enter Email">
+<button (click)="getEmail(userInput.value)">Get Email</button> -->
+
+<!-- <div class="hero-box">
+  Welcome Abhi
+</div> -->
+
+
+<!-- <style>
+  .text{
+    color: blue;
+    font-size: 22px;
+    text-align: center;
+  }
+</style>
+<div class="text">
+  Welcome Abhi !
+</div> -->
+
+
+<!-- @if (isLoggedIn){
+  <h1>Welcome Mohit</h1>
+
+} @else{
+  <h2>Please Login</h2>
+} -->
+
+
+<!-- @if(marks >= 50){
+  <p>Pass</p>
+}@else{
+  <p>Fail</p>
+} -->
+
+ 
+<!-- <button (click)="toggleBox()">Toggle</button>
+
+@if(showBox){
+  <div class="box">This is a Box</div>
+} -->
+
+
+<!-- <input (input)="updateAge($event.target.value)" placeholder="Enter your age" /> -->
+
+<!-- @if(age > 30){
+  <p>Adult</p>
+}
+@else {
+  <p>Minor</p>
+} -->
+
+
+<!-- @if(status ==="pending"){
+  <h3>Your Order is being Processed</h3>
+
+}
+@else if(status === "processing"){
+  <h2>Your Order has been Completed</h2>
+}
+@else if(status ==="Failed"){
+  <h1>There was an issue with your order</h1>
+}
+@else{
+  <h3>Unknown status</h3>
+} -->
+
+<!-- <input (input)="updateAge($event.target.value)" placeholder="Enter the Age">
+
+@if(age >=60){
+  <p>Senior Citizens</p>
+}
+@else if(age >= 18){
+  <p>Adult</p>
+}
+@else if(age >=13){
+  <p>Teenager</p>
+}
+@else{
+  <p>Invalid Age</p>
+} -->
+
+
+<!-- <button (click)="section='home'">Home</button>
+
+<button (click)="section='profile'">profile</button>
+
+<button (click)="section='setting'">setting</button>
+
+@if(section === 'home'){
+  <h2> Welcome to the home </h2>
+}
+@else if(section === 'profile'){
+  <h2> your Profile Information </h2>
+}
+@else if(section ==='setting'){
+  <h2>Adjust your setting</h2>
+}
+@else{
+  <h2> section not found</h2>
+} -->
+
+<!-- @switch(value){
+  @case ('home'){
+    <p>Home Page</p>
+  }
+  @case('about'){
+    <p>About Page</p>
+  }
+  @case('contact'){
+    <p>Contact Page</p>
+  }
+  @default{
+    <p>Page Not found</p>
+  }
+} -->
+
+<!-- 
+@for(item of items; track $index) {
+  <p>{{item}}</p>
+} -->
+
+@for(item of items; track $index){
+  <p>{{$index+1}},{{item}}</p>
+}

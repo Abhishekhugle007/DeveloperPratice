@@ -67,19 +67,62 @@ export class App {
   // }
 
 
-  counter: number =0;
-  handleAdd(){
+  // counter: number =0;
+  // handleAdd(){
 
-    this.counter++;
-  }
-  handleMinus(){
-    if(this.counter > 0){
-    this.counter--;
+  //   this.counter++;
+  // }
+  // handleMinus(){
+  //   if(this.counter > 0){
+  //   this.counter--;
 
-    }
-  }
-  handleReset(){
-    this.counter=0;
-  }
+  //   }
+  // }
+  // handleReset(){
+  //   this.counter=0;
+  // }
   
+
+  // name:string = "";
+  // city:string = "";
+  // email:string = "";
+  // updateName(val:string){
+  //   this.name = val;
+    
+  // }
+  // getEmail(val:string){
+  //   this.email = val;
+  // }
+
+// isLoggedIn = false;
+
+// marks =56;
+
+// showBox = true;
+
+
+// toggleBox(){
+//    this.showBox = !this.showBox;
+// }
+
+//  age =0;
+//  updateAge(val :string){
+//   this.age = Number(val);
+//  }
+
+
+// status:string ="processing";
+  
+  // age:number= 0;
+  // updateAge(val:string){
+  //   this.age =parseInt(val);
+  // }
+
+
+  // section ="home";
+
+  // value:string ='home';
+
+  items=['Html', 'css','javascript','Angular'];
+   
 }
