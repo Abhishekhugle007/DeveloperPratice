@@ -3,9 +3,11 @@ import { Component,computed, signal, Type,effect, inject, NgModule } from '@angu
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Card } from './card/card';
 import { Button } from './button/button';
-import { FormField } from '@angular/forms/signals';
+import { email, form, FORM_FIELD, FormField, isFieldTree } from '@angular/forms/signals';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './header-component/header-component';
+import { Child } from './child/child';
+import { Form } from '@angular/forms';
 
 //import { single } from 'rxjs';
 // import { Events } from './events/events';
@@ -19,7 +21,7 @@ import { HeaderComponent } from './header-component/header-component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterLink, RouterOutlet],
+  imports: [],
   styleUrl: './app.css',
   templateUrl: './app.html',
 })
@@ -433,7 +435,31 @@ export class App {
 //   this.message= msg;
 
 // }
+ 
+  
+
+// constructor(){
+//   console.log("1.Constructor");
+// }
+
+  //  title =signal("Hello from App Components");
+  //  show =signal(true);
+
+  //  changeTitle(){
+  //   this.title.set("Title Changed!");
+  //  }
+  //  toggle(){
+  //   this.show.set(!this.show);
+  //  }
 
 
-   
-}
+  // loginModel =signal({
+  //   email: '',
+  //   password: ''
+  // })
+  // loginForm =form(this.loginModel)
+
+  // submit(){
+  //   console.log(this.loginModel)
+  // }
+} 

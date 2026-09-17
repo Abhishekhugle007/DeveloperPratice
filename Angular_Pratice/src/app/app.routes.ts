@@ -31,6 +31,6 @@ export const routes: Routes = [
     //   {path: '**',component: PageNotFound}
 
 
-    {path: 'product/:id', component: ProductComp},
-    {path: 'products', component: ProductsComp}
+    // {path: 'product/:id', component: ProductComp},
+    // {path: 'products', component: ProductsComp}
 ];
