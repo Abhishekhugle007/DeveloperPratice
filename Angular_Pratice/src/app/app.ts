@@ -19,7 +19,7 @@ import { HeaderComponent } from './header-component/header-component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,HeaderComponent],
+  imports: [RouterLink, RouterOutlet],
   styleUrl: './app.css',
   templateUrl: './app.html',
 })
