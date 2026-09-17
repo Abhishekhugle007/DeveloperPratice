@@ -1,6 +1,11 @@
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
-import { Component,computed, signal, Type,effect, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component,computed, signal, Type,effect, inject, NgModule } from '@angular/core';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Card } from './card/card';
+import { Button } from './button/button';
+import { FormField } from '@angular/forms/signals';
+import { RouterLink, RouterOutlet } from '@angular/router';
+
 //import { single } from 'rxjs';
 // import { Events } from './events/events';
 // import { Login } from './login/login';
@@ -13,7 +18,7 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
    selector: 'app-root',
-   imports:[],
+   imports: [RouterLink,RouterOutlet],
   styleUrl: './app.css',
   templateUrl: './app.html',
 })
@@ -340,6 +345,92 @@ export class App {
 //     list.map((item, i) => i === index ? { ...item, text: text.trim() }: item)
 //   );
 // }
+
+
+  //  count =signal(0);
+
+  //  isLoggedIn= signal(false);
+
+  //  items=signal<string[]>(['Angular', 'ReactJs', 'Javascript']);
+
+  //  addItem(){
+  //   this.items.update(items =>[...items,"HTML"]);
+    
+  //  }
+
+  //  role =signal<'admin' | 'user' >('user');
+
+  // features =signal<string[]>([
+  //   "Dashboard", "Profile", "Settings"
+  // ]);
+   
+  // makeAdmin(){
+  //   this.role.set('admin');
+  //   this.features.set([
+  //     "Dashborad",
+  //     "Profile",
+  //     "Settings",
+  //     "Admin Panel",
+  //     "User Mangement"
+  //   ]);
+  // }
+
+  // makeUser(){
+  //   this.role.set('user');
+  //   this.features.set([
+  //     "Dashborad",
+  //     "Profile",
+  //     "Settings"
+  //   ]);
+  // }
+
+
+  // username:string ="Angular"
+  
+  // message:string =' ';
+  // onMessage(msg:string){
+  //   this.message = msg;
+  // }
+
+
+  // name= signal(' ');
+  // email = signal(' ');
+
+  // submitForm(){
+  //    console.log(`Name: ${this.name()}, Email: ${this.email()}`);
+  // }
+
+//  userSignal = signal({
+//     name: '',
+//     email: ''
+//   });
+
+//   form: any;
+
+//   constructor(private fb: FormBuilder) {
+//     this.form = this.fb.group({
+//       name: [''],
+//       email: ['']
+//     });
+//     this.form.valueChanges.subscribe((value: any) =>{
+//       this.userSignal.set(value);
+//     });
+//   }
+//   submitForm(){
+//     console.log(`Name: ${this.userSignal().name}, Email: ${this.userSignal().email}`);
+//   }
+
+   
+
+// saveData(){
+//   console.log("Data Fetch");
+// }
+
+// message= " ";
+// onSave(msg:string){
+//   console.log(msg);
+//   this.message= msg;
+
+// }
+   
 }
-
-

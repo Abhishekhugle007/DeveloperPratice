@@ -354,3 +354,123 @@
          </li>
   }
 </ul> -->
+
+
+<!-- 
+<h1>{{count()}}</h1>
+
+@if (isLoggedIn()){
+  <p>Welcome Abhishekh</p>
+
+}
+@else{
+  <p>Welcome User</p>
+}
+
+<button (click)="isLoggedIn.set(true)">Login</button>
+<button (click)="isLoggedIn.set(false)">Logout</button>
+
+ <ul>
+  @for(item of items(); track $index){
+   <li>{{ item }}</li>
+  }
+ </ul>
+<button (click)="addItem()">Add Item</button> -->
+
+<!-- 
+<h1>User Dashboard</h1>
+<button (click)="makeUser()">User</button>
+<button (click)="makeAdmin()">Admin</button>
+
+@if(role() === 'admin'){
+  <p>Welcome Admin</p>
+}@else{
+  <p>Normal user</p>
+}
+
+<h3>Available Features</h3>
+
+<ul>
+  @for(feature of features(); track $index){
+     <li>{{ feature}}</li>
+  }
+</ul>
+ -->
+
+<!-- <h2>Template-Driven Form + Signal</h2>
+
+<input
+  [ngModel]="name()"
+  (ngModelChange)="name.set($event)"
+  placeholder="Enter your name"
+/>
+
+<br /><br />
+
+<input
+  [ngModel]="email()"
+  (ngModelChange)="email.set($event)"
+  placeholder="Enter your email"
+/>
+
+<br /><br />
+
+<button (click)="submitForm()">Submit</button>
+
+<P>Name: {{name()}}</P>
+<P>Email: {{email()}}</P> -->
+
+
+<!-- 
+<h2>Signal Reactive Form</h2>
+<form [formGroup]="form">
+  <input formControlName="name" placeholder="Name">
+  <br><br>
+  <input fromControlName="email" placeholder="Email">
+  <br><br>
+
+</form>
+
+
+  <button (click)="submitForm()">Submit</button>
+
+ 
+
+  <p>Signal Value:</p>
+  <pre>{{userSignal() | json}}</pre> -->
+
+
+
+  <!-- <app-card>
+    [title]="'Angular Course'"
+    [description]= "'Learn Angular step step by step'">
+
+    <p>This is Coming From Parent</p>
+    <button>Click me </button>
+  </app-card> -->
+
+
+<!-- <app-button
+  [label]="'Save'"
+  (clicked)="onSave($event)">
+</app-button>
+
+<p>{{message}}</p> -->
+
+<!-- <app-form-field
+  label="Email"
+  value="test@gmail.com"
+  type="email">
+</app-form-field> -->
+
+
+<h1>My App</h1>
+<router-outlet></router-outlet>
+<nav>
+  <a routerLink="/home">Home</a><br>
+  <a routerLink="/about">About</a><br>
+  <a routerLink="/contact">Contact</a>
+</nav>
+
+<hr>
+
