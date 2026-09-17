@@ -5,6 +5,7 @@ import { Card } from './card/card';
 import { Button } from './button/button';
 import { FormField } from '@angular/forms/signals';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { HeaderComponent } from './header-component/header-component';
 
 //import { single } from 'rxjs';
 // import { Events } from './events/events';
@@ -17,8 +18,8 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 // }
 
 @Component({
-   selector: 'app-root',
-   imports: [RouterLink,RouterOutlet],
+  selector: 'app-root',
+  imports: [RouterOutlet,HeaderComponent],
   styleUrl: './app.css',
   templateUrl: './app.html',
 })
@@ -432,5 +433,7 @@ export class App {
 //   this.message= msg;
 
 // }
+
+
    
 }
