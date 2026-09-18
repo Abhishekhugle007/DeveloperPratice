@@ -1,0 +1,16 @@
+<div class="min-h-screen bg-gray-900 text-white p-6">
+  <div class="text-center mb-10">
+    <h1 class="text-5xl font-bold">{{ formatTime('Asia/Kolkata') }}</h1>
+    <p class="text-xl text-gray-300">{{ formatDate('America/New_York') }}</p>
+  </div>
+
+  <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+    @for (clock of worldClocks; track clock.country) {
+      <div class="bg-gray-800 rounded-2xl p-6 shadow-lg text-center">
+        <h2 class="text-2xl font-semibold mb-4">{{ clock.country }}</h2>
+        <p class="text-3xl font-bold text-green-400 mb-2">{{ formatTime(clock.zone) }}</p>
+        <p class="text-lg text-gray-300">{{ formatDate(clock.zone) }}</p>
+      </div>
+    }
+  </div>
+</div>
