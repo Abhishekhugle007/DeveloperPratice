@@ -478,7 +478,23 @@ export class App {
   //   });
   // }
 
-  userService = inject(UserService);
+  // userService = inject(UserService);
 
-  users = toSignal<User[]>(this.userService.getUsers())
+  // users = toSignal<User[]>(this.userService.getUsers())
+
+  // name=signal('Abhishekj');
+  // submitForm(){
+  //   alert(`user ${this.name()} saved successfully`);
+  // }
+   
+   
+
+  selectorColor=signal('#3498db');
+  onColorChange(newColor: string){
+   this.selectorColor.set(newColor);
+  }
+  copyColor(){
+    navigator.clipboard.writeText(this.selectorColor());
+  }
+
 }

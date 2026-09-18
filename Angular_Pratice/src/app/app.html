@@ -532,3 +532,44 @@ placeholder="password"
     <li> {{user.name}} - {{user.email}} - {{user.isActive}}</li>
   }
 </ul> -->
+
+<!-- <div class="container mt-4">
+  <div class="row">
+    
+    <div class="col-md-6">
+      <input
+        #nameInput
+        class="form-control"
+        [value]="name()"
+        (input)="name.set(nameInput.value)"
+        placeholder="Name">
+    </div>
+
+    <div class="col-md-6">
+      <button
+        class="btn btn-success"
+        (click)="submitForm()">
+        Save User
+      </button>
+    </div>
+
+  </div>
+</div> -->
+
+
+<div class="container">
+  <h1>Color Picker App</h1>
+  <input type="color"
+  [value]="selectorColor()"
+  (input)= "onColorChange($event.target.value)"/>
+
+  <div  class="preview-box"
+    [style.backgroundColor]="selectorColor()">Preview
+   
+  </div>
+  <p class="hex-code">
+    HEX Code:<b>{{ selectorColor()}}</b>
+  </p>
+
+  <button class="color" (click)="copyColor()">Copy Color</button>
+</div>

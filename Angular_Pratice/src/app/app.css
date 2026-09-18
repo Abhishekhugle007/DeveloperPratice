@@ -93,3 +93,35 @@ button{
   border-radius: 6px;
   
  } */
+
+
+ .container{
+  text-align: center;
+  font-family:Arial, Helvetica, sans-serif;
+  padding: 10px;
+
+ }
+ .preview-box{
+  margin: 20px auto;
+  width: 300px;
+  height: 300px;
+  border-radius: 10px;
+  display: flex;
+  color: wheat;
+  font-size: 18px;
+  justify-content: center;
+  align-items: center;
+
+
+ }
+
+ .hex-code{
+  margin-top: 15px 0;
+  font-size: 19px;
+
+ }
+ .color{
+  font-size: 20px;
+  text-shadow: 10px;
+  text-transform: uppercase;
+ }
