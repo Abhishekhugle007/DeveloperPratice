@@ -8,6 +8,10 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './header-component/header-component';
 import { Child } from './child/child';
 import { Form } from '@angular/forms';
+import { User } from './user';
+
+import { toSignal } from '@angular/core/rxjs-interop';
+import { UserService } from './services/user-service';
 
 //import { single } from 'rxjs';
 // import { Events } from './events/events';
@@ -462,4 +466,19 @@ export class App {
   // submit(){
   //   console.log(this.loginModel)
   // }
-} 
+
+
+  // users: any[] = [];
+
+  // constructor(private userService: User) {}
+
+  // ngOnInit(): void {
+  //   this.userService.getUsers().subscribe((data: any) => {
+  //     this.users = data;
+  //   });
+  // }
+
+  userService = inject(UserService);
+
+  users = toSignal<User[]>(this.userService.getUsers())
+}

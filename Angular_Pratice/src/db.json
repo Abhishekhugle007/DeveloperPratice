@@ -1,0 +1,13 @@
+@'
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Abhishekh",
+      "email": "abhishekh@gmail.com",
+      "isActive": true
+    }
+   
+  ]
+}
+'@ | Set-Content db.json
