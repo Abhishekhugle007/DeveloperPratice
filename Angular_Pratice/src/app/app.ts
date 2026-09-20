@@ -314,44 +314,44 @@ export class App {
     
   // }
   
-  // Todo Project
-//     newTodo =signal('');
-//     todos =signal<{text: string; done: boolean}[]>([]);
+  
+    newTodo =signal('');
+    todos =signal<{text: string; done: boolean}[]>([]);
 
-//     addTodo(){
-//       const text = this.newTodo().trim();
+    addTodo(){
+      const text = this.newTodo().trim();
        
-//       if( text === ''){
-//         return;
-//       }
+      if( text === ''){
+        return;
+      }
 
-//        this.todos.update(list => [...list,{ text, done: false }]);
+       this.todos.update(list => [...list,{ text, done: false }]);
 
-//        this.newTodo.set('');
+       this.newTodo.set('');
 
 
-//     }
-//     toggleTodo(index: number){
-//       this.todos.update( list =>
-//         list.map(( item, i) =>
-//           i === index ? { ...item,done: !item.done} : item
-//         )
-//       );
-//     }
-//     deleteTodo(index : number){
-//       this.todos.update(list =>
-//         list.filter(( _, i)=> i !== index)
-//       );
-//     }
-//     editTodo(index: number) {
-//     const text = prompt('Edit todo:', this.todos()[index].text);
-//     if (text === null || text.trim() === '') {
-//     return;
-//   }
-//     this.todos.update(list =>
-//     list.map((item, i) => i === index ? { ...item, text: text.trim() }: item)
-//   );
-// }
+    }
+    toggleTodo(index: number){
+      this.todos.update( list =>
+        list.map(( item, i) =>
+          i === index ? { ...item,done: !item.done} : item
+        )
+      );
+    }
+    deleteTodo(index : number){
+      this.todos.update(list =>
+        list.filter(( _, i)=> i !== index)
+      );
+    }
+    editTodo(index: number) {
+    const text = prompt('Edit todo:', this.todos()[index].text);
+    if (text === null || text.trim() === '') {
+    return;
+  }
+    this.todos.update(list =>
+    list.map((item, i) => i === index ? { ...item, text: text.trim() }: item)
+  );
+}
 
 
   //  count =signal(0);
@@ -489,12 +489,12 @@ export class App {
    
    
 
-  selectorColor=signal('#3498db');
-  onColorChange(newColor: string){
-   this.selectorColor.set(newColor);
-  }
-  copyColor(){
-    navigator.clipboard.writeText(this.selectorColor());
-  }
+  // selectorColor=signal('#3498db');
+  // onColorChange(newColor: string){
+  //  this.selectorColor.set(newColor);
+  // }
+  // copyColor(){
+  //   navigator.clipboard.writeText(this.selectorColor());
+  // }
 
 }

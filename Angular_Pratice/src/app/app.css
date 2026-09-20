@@ -42,7 +42,7 @@ button{
    
  } */
 
-/* Todo css
+
  input{
   padding: 6px;
   width:200px;
@@ -92,10 +92,10 @@ button{
   align-items: center;
   border-radius: 6px;
   
- } */
+ }
 
 
- .container{
+ /* .container{
   text-align: center;
   font-family:Arial, Helvetica, sans-serif;
   padding: 10px;
@@ -124,4 +124,4 @@ button{
   font-size: 20px;
   text-shadow: 10px;
   text-transform: uppercase;
- } 
+ }  */
