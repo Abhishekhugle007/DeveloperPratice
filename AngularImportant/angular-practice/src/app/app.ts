@@ -27,10 +27,10 @@ export class App {
   // }
 
 
-  data$:Observable<string>= new Observable(observer =>{
-      observer.next("Hello");
-      observer.complete();
-  });
+  // data$:Observable<string>= new Observable(observer =>{
+  //     observer.next("Hello");
+  //     observer.complete();
+  // });
 
    
 
