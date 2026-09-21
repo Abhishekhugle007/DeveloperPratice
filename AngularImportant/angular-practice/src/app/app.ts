@@ -1,10 +1,10 @@
 import { Component, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { User } from './models/user';
+import { UserService } from './services/user-service';
+
 
 
 @Component({
-  imports: [],
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',
@@ -32,8 +32,59 @@ export class App {
   //     observer.complete();
   // });
 
-   
+//  users: any[] = [];
+
+// constructor(private userService: User) {}
+
+// ngOnInit() {
+//   this.userService.getUsers().subscribe((data: any) => {
+//     this.users = data;
+//   });
+//}
+
+
+
+// UserService = inject(User);
+// users = toSignal(this.UserService.getUsers(), { initialValue: [] });
+
+// userService = inject(UserService);
+
+// users : any = toSignal(this.userService.getUsers());
+
+
+users = signal<User[]>([]);
+name = signal<string>('');
+email = signal<string>('');
+
+constructor(private userService: UserService) {}
+
+ngOnInit(): void {
+  this.loadUsers();
 
 }
+    loadUsers(){
+      this.userService.getUsers().subscribe((data: User[]) => {
+      this.users.set(data);
+  });
+    }
+
+    submitForm(){
+      const payload: User ={
+        name: this.name(),
+        email: this.email(),
+        isActive: false
+      };
+
+      this.userService.addUser(payload).subscribe(() =>{
+        alert('User added successfully');
+        
+        this.loadUsers();  // refresh the user list after adding a new user
+        this.name.set('');  // clear the name input field
+        this.email.set(''); // clear the email input field
+      })
+
+      }
+    }
+
 
 

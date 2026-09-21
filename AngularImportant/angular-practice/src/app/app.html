@@ -21,3 +21,45 @@ this.data$.subscribe(data =>{
   console.log(data)
 }); -->
 
+
+<!-- <h3>User List</h3>
+
+<ul>
+  @for(user of users(); track user.id){
+    <li>
+      {{user.id}} -- {{user.name}} ({{user.email}})
+    </li>
+  } @empty {
+    <li>No users found.</li>
+  }
+</ul> -->
+
+<h3>Users from JSON Server</h3>
+
+<input
+  type="text"
+  placeholder="Enter the name"
+  [value]="name()"
+  (input)="name.set($any($event.target).value)"
+/>
+
+<input
+  type="email"
+  placeholder="Enter Email"
+  [value]="email()"
+  (input)="email.set($any($event.target).value)"
+/>
+
+<button (click)="submitForm()">Add User</button>
+
+<hr>
+
+<h2>User List</h2>
+
+<ul>
+  @for (user of users(); track user.id ?? $index) {
+    <li>
+      {{ user.name }} -- {{ user.email }} -- {{ user.isActive }}
+    </li>
+  }
+</ul>
