@@ -56,6 +56,8 @@ users = signal<User[]>([]);
 name = signal<string>('');
 email = signal<string>('');
 
+editingUpdateID = signal<number | null>(null);
+
 constructor(private userService: UserService) {}
 
 ngOnInit(): void {
@@ -68,23 +70,63 @@ ngOnInit(): void {
   });
     }
 
+    //click Edit
+
+    editUser(user: User){
+      this.editingUpdateID.set(user.id!);
+      this.name.set(user.name);
+      this.email.set(user.email);
+      
+    }
+    // Add and update   User
     submitForm(){
       const payload: User ={
         name: this.name(),
         email: this.email(),
         isActive: false
       };
-
-      this.userService.addUser(payload).subscribe(() =>{
+      // update user
+      if(this.editingUpdateID() !== null){
+        this.userService.updateUser(this.editingUpdateID()!, payload).subscribe(()=>{
+          alert('User updated successfully');
+          this.afterSave();
+        })
+      }
+      // add user
+      else{
+         this.userService.addUser(payload).subscribe(() =>{
         alert('User added successfully');
-        
-        this.loadUsers();  // refresh the user list after adding a new user
-        this.name.set('');  // clear the name input field
-        this.email.set(''); // clear the email input field
+       this.afterSave();
       })
+
 
       }
     }
 
+    toggleStatus(user: User){
+       this.userService.updateUserStatus(user.id!, !user.isActive).subscribe(()=>{
+        this.users.update(list =>
+          list.map(u =>
 
-
+         u.id === user.id ? { ...u, isActive: !u.isActive } : u
+        )
+      )
+    })
+  }
+  
+  deleteUser(user: User){
+    const confirmDelete = confirm(`Are you sure you want to delete ${user.name}?`);
+    if(confirmDelete){
+      this.userService.deleteUser(user.id!).subscribe(()=>{
+        alert('User deleted successfully');
+        this.users.update(list => list.filter(u => u.id !== user.id));
+      })
+    }
+  }
+    afterSave(){
+      this.loadUsers();  // refresh the user list after adding a new user
+      this.name.set('');  // clear the name input field
+      this.email.set(''); // clear the email input field
+      this.editingUpdateID.set(null);
+    }
+  }

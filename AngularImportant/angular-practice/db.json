@@ -1,34 +1,39 @@
 {
   "posts": [
     {
-      "id": "1",
-      "name": "Abhishekh",
+      "name": "Abhioshedkd",
       "email": "abhi@gmail.com",
-      "isActive": true
+      "isActive": false,
+      "id": "nvkO-XkYwgM",
+      "status": true
     },
     {
       "name": "Abhioshedkd",
       "email": "abhi@gmail.com",
       "isActive": false,
-      "id": "nvkO-XkYwgM"
-    },
-    {
-      "name": "Abhioshedkd",
-      "email": "abhi@gmail.com",
-      "isActive": false,
-      "id": "DoEUz5Rrnig"
+      "id": "DoEUz5Rrnig",
+      "status": true
     },
     {
       "name": "Rahul",
       "email": "Rahul@gmial.com",
       "isActive": false,
-      "id": "AKXCV4hZTS0"
+      "id": "AKXCV4hZTS0",
+      "status": true
     },
     {
-      "name": "Abhi",
+      "name": "AbhiSHEKH",
       "email": "test@gmail.com",
-      "isActive": true,
-      "id": "iJcndDD9yRQ"
+      "isActive": false,
+      "id": "iJcndDD9yRQ",
+      "status": true
+    },
+    {
+      "name": "ROHIT",
+      "email": "rohit@GMAIL.COM",
+      "isActive": false,
+      "id": "CsCjxzeEuhg",
+      "status": true
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
