@@ -1,0 +1,2 @@
+This is a synchronous file write operations Updated
+This is a synchronous file append operations Updated
