@@ -1,5 +1,22 @@
 {
+  "name": "node_product",
+  "version": "1.0.0",
+  "description": "pratice",
+  "keywords": [
+    "product"
+  ],
+  "license": "ISC",
+  "author": "Abhi",
+  "type": "commonjs",
+  "main": "basic.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "dependencies": {
-    "chalk": "^4.1.2"
+    "axios": "^1.20.0",
+    "chalk": "^4.1.2",
+    "dayjs": "^1.11.23",
+    "express": "^5.2.1",
+    "lodash": "^4.18.1"
   }
 }

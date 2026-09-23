@@ -28,3 +28,5 @@ if(fs.existsSync("sync.txt")){
     console.log('File does not exist');
 }
 
+
+
