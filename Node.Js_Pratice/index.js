@@ -25,4 +25,4 @@ axios.get('https://jsonplaceholder.typicode.com/posts/1')
 
 
   const dayjs = require('dayjs');
-  console.log(dayjs().format('YYYY-MM-DD HH:mm:ss')); // Output: Current date and time in the specified formatzz
+  console.log(dayjs().format('YYYY-MM-DD HH:mm:ss')); // Output: Current date and time in the specified format
