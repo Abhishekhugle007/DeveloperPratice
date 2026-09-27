@@ -10,7 +10,7 @@
   "type": "commonjs",
   "main": "basic.js",
   "scripts": {
-    "dev": "nodemon httpModule.js"
+    "dev": "nodemon form-pratice.js"
   },
   "dependencies": {
     "axios": "^1.20.0",
