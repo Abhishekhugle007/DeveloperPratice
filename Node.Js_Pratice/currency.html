@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f2f2e9">
+    <title>Currency converter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/currency.css">
+</head>
+<body>
+    <div class="shell">
+        <header class="topbar">
+            <a class="brand" href="/" aria-label=" currency converter home">
+                <span class="brand-mark" aria-hidden="true">M</span>
+                <span class="brand-name">Bharat App<span>.</span></span>
+            </a>
+            <div class="rate-status"><span class="status-dot" aria-hidden="true"></span><span>ECB reference rates</span></div>
+        </header>
+
+        <main id="app" aria-busy="true">
+            <div class="page-heading">
+                <div><p class="eyebrow">Currency desk / 01</p><h1>Currency converter</h1></div>
+                <time class="heading-date" id="updated-date">Fetching latest rates...</time>
+            </div>
+
+            <div class="workspace">
+                <section class="converter-panel" aria-labelledby="convert-title">
+                    <div class="panel-heading">
+                        <h2 id="convert-title">Convert an amount</h2>
+                        <span class="panel-kicker">MID-MARKET</span>
+                    </div>
+                    <form id="converter-form">
+                        <div class="currency-fields">
+                            <div class="currency-box">
+                                <label class="box-label" for="from-currency">You send</label>
+                                <select class="currency-select" id="from-currency" aria-label="Currency to convert from"></select>
+                                <input class="money-input" id="amount" type="number" min="0" step="any" value="100" inputmode="decimal" aria-label="Amount to convert">
+                                <span class="currency-name" id="from-name"></span>
+                            </div>
+                            <button class="swap-button" id="swap-button" type="button" aria-label="Swap currencies" title="Swap currencies">⇄</button>
+                            <div class="currency-box">
+                                <label class="box-label" for="to-currency">They receive</label>
+                                <select class="currency-select" id="to-currency" aria-label="Currency to convert to"></select>
+                                <output class="money-output" id="converted" for="amount">--</output>
+                                <span class="currency-name" id="to-name"></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="rate-bar">
+                        <div><div class="rate-line" id="rate-line">Waiting for a live rate</div><div class="rate-date" id="rate-date">Rates update on business days</div></div>
+                        <button class="copy-button" id="copy-button" type="button" aria-label="Copy converted amount" title="Copy converted amount">⧉</button>
+                    </div>
+                    <p class="message" id="message" role="status" aria-live="polite"></p>
+                </section>
+
+                <aside class="side-column" aria-label="Reference rates">
+                    <div class="photo-panel"><p class="photo-title">Global currencies<strong>One world, many values.</strong></p></div>
+                    <section class="snapshot" aria-labelledby="snapshot-title">
+                        <div class="snapshot-heading"><h2 id="snapshot-title">At a glance</h2><span class="snapshot-base" id="snapshot-base">1 USD</span></div>
+                        <div class="snapshot-list" id="snapshot-list" aria-live="polite"></div>
+                    </section>
+                </aside>
+            </div>
+
+            <footer class="footer">
+                <span>RATES ARE FOR REFERENCE</span>
+                <span>DATA BY <a href="https://www.frankfurter.dev/" target="_blank" rel="noreferrer">FRANKFURTER</a></span>
+            </footer>
+        </main>
+    </div>
+
+    <script src="/currency-client.js" defer></script>
+</body>
+</html>
