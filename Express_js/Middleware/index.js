@@ -4,6 +4,13 @@ const app = express();
 const PORT = 3001;
 
 
+
+// const loggerMiddleware= (req,res,next)=>{
+// console.log(`[${new Date().toLocaleDateString()}] ${req.method} ${req.url}`);
+//      next();
+// }
+// app.use(loggerMiddleware);
+
 app.use((req, res,next) =>{
     console.log(`[${new Date().toLocaleDateString()}] ${req.method} ${req.url}`);
     next();
