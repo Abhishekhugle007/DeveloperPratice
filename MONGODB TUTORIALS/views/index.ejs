@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Students</title>
+</head>
+<body>
+    <h1>Students</h1>
+
+    <% if (students.length === 0) { %>
+        <p>No students found.</p>
+    <% } else { %>
+        <% const columns = Object.keys(students[0]); %>
+        <table>
+            <thead>
+                <tr>
+                    <% columns.forEach((column) => { %>
+                        <th scope="col"><%= column %></th>
+                    <% }); %>
+                </tr>
+            </thead>
+            <tbody>
+                <% students.forEach((student) => { %>
+                    <tr>
+                        <% columns.forEach((column) => { %>
+                            <td><%= student[column] && typeof student[column] === "object" ? JSON.stringify(student[column]) : student[column] %></td>
+                        <% }); %>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    <% } %>
+</body>
+</html>
