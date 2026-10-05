@@ -18,6 +18,20 @@ const dbName = "myFirstDB";
 
 //Create a new MongoClient
 const client = new MongoClient(url);
+let db;
+
+async function connectToMongoDB() {
+    await client.connect();
+    console.log("Connected successfully to MongoDB server");
+    db = client.db(dbName);
+}
+
+app.get("/students", async (req, res) => {
+    await connectToMongoDB();
+    const data = await db.collection("students").find({}).toArray();
+    res.json(data);
+});
+
 
 //MIDDLEWARE to parse JSON request bodies'
 app.use(express.json());
@@ -33,7 +47,7 @@ app.get("/data", async (req, res) => {
         const collection = db.collection("students");
 
         //fetch data from the collection
-        const data = await collection.find({}).toArray();
+        const data = await collection.find({ age: { $gt: 24 } }).toArray();
         res.render("index", { students: data });
     }catch (error) {
         console.error("Error fetching data:", error);
