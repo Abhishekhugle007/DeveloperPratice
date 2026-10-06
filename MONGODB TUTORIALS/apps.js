@@ -5,9 +5,6 @@ import userRoutes from "./routes/userRoutes.js";
 
 const app = express();
 
-// connect to MongoDB
-connectDB();
-
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -20,6 +17,17 @@ app.get("/", (req, res) => {
 app.use("/api", userRoutes);
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+
+async function startServer() {
+  try {
+    await connectDB();
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error("Unable to start server because MongoDB connection failed:", error);
+    process.exitCode = 1;
+  }
+}
+
+startServer();
