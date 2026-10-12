@@ -18,7 +18,7 @@ io.on("connection", (socket) => {
             return;
         }
 
-        socket.broadcast.emit("message", trimmedMessage);
+        socket.broadcast.emit("message", trimmedMessage); // one to many
     });
 });
 
