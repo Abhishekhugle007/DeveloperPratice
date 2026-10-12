@@ -1,32 +1,27 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>One-to-One Chat</title>
+    <title>Private Chat</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
             max-width: 600px;
             margin: 40px auto;
-            padding: 20px;
-        }
+            padding: 20px;}
 
         input, button {
             padding: 10px;
-            margin: 5px 0;
-        }
-
+            margin: 5px 0;}
         input {
-            box-sizing: border-box;
             width: 100%;
+            box-sizing: border-box;
         }
-
         button {
             cursor: pointer;
         }
-
         #messages {
             border: 1px solid #ccc;
             height: 250px;
@@ -34,108 +29,330 @@
             padding: 10px;
             margin: 15px 0;
         }
+        #status {
+            min-height: 1em;
+        }
     </style>
 </head>
 <body>
-    <h2>One-to-One Private Chat</h2>
+    <h2>Private Chat</h2>
 
     <label for="userId">Your User ID</label>
-    <input id="userId" placeholder="e.g. user1">
+    <input id="userId" placeholder="Enter your ID">
 
     <button id="joinBtn">Join Chat</button>
+    <p id="status" role="status"></p>
 
     <hr>
 
-    <label for="receiverId">Receiver User ID</label>
-    <input id="receiverId" placeholder="e.g. user2">
+    <label for="receiverId">Recipient ID(s)</label>
+    <input id="receiverId" placeholder="user2 or user2,user3">
 
     <div id="messages"></div>
 
-    <input id="messageInput" placeholder="Type your message...">
-    <button id="sendBtn">Send Message</button>
+    <input id="messageInput" placeholder="Type a message..." disabled>
+    <button id="sendBtn" disabled>Send Message</button>
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const socket = io();
-
-        const userIdInput = document.getElementById("userId");
+        const userInput = document.getElementById("userId");
         const receiverInput = document.getElementById("receiverId");
         const messageInput = document.getElementById("messageInput");
         const messages = document.getElementById("messages");
+        const status = document.getElementById("status");
         const joinBtn = document.getElementById("joinBtn");
         const sendBtn = document.getElementById("sendBtn");
+        const SESSION_STORAGE_KEY = "socketChatSession";
 
+        let userId = "";
         let joined = false;
-        let currentUserId = "";
+        let joining = false;
+        let currentReceiver = "";
+        let historyCursor = null;
+        let hasOlderMessages = false;
+        let historyLoading = false;
+        let historyRequestId = 0;
+        const renderedMessageIds = new Set();
 
-        function setControlsState() {
+        try {
+            const savedSession = JSON.parse(localStorage.getItem(SESSION_STORAGE_KEY) || "null");
+            if (
+                savedSession &&
+                typeof savedSession.userId === "string" &&
+                savedSession.userId.trim() &&
+                savedSession.userId.trim().length <= 64
+            ) {
+                userId = savedSession.userId.trim();
+                userInput.value = userId;
+                if (typeof savedSession.recipientInput === "string") {
+                    receiverInput.value = savedSession.recipientInput;
+                }
+            }
+        } catch (error) {
+            console.error("Could not restore the saved chat session:", error);
+            showStatus("Could not restore your saved chat session.");
+        }
+
+        function saveSession() {
+            try {
+                localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify({
+                    userId,
+                    recipientInput: receiverInput.value
+                }));
+            } catch (error) {
+                console.error("Could not save the chat session:", error);
+                showStatus("Could not save your chat session in this browser.");
+            }
+        }
+
+        function showStatus(text) {
+            status.textContent = text;
+        }
+
+        function setControls() {
+            joinBtn.disabled = !socket.connected || joining;
+            joinBtn.textContent = joined ? "Switch User" : joining ? "Joining..." : "Join Chat";
+            userInput.disabled = joined || joining;
+            messageInput.disabled = !joined;
             sendBtn.disabled = !joined;
         }
 
-        function showMessage(text) {
-            const div = document.createElement("div");
-            div.textContent = text;
-            messages.appendChild(div);
-            messages.scrollTop = messages.scrollHeight;
+        function getRecipients() {
+            return [...new Set(
+                receiverInput.value.split(",")
+                    .map(id => id.trim())
+                    .filter(Boolean)
+            )];
         }
 
-        joinBtn.onclick = () => {
-            const userId = userIdInput.value.trim();
+        function showMessage(msg, prepend = false) {
+            const id = msg.id || msg._id;
+            if (id && renderedMessageIds.has(String(id))) return;
 
-            if (!userId) {
-                alert("Enter your User ID");
+            const div = document.createElement("div");
+            div.textContent = `${msg.from === userId ? "You" : msg.from}: ${msg.message}`;
+            if (id) renderedMessageIds.add(String(id));
+            if (prepend) {
+                    messages.prepend(div);
+            } else {
+                    messages.appendChild(div);
+            }
+        }
+
+        function loadMessages(loadOlder = false) {
+            const recipients = getRecipients();
+
+            if (!joined || recipients.length !== 1) {
+                    historyRequestId += 1;
+                    currentReceiver = "";
+                    historyCursor = null;
+                    hasOlderMessages = false;
+                    historyLoading = false;
+                    messages.replaceChildren();
+                    return;
+            }
+
+            const receiver = recipients[0];
+
+            if (loadOlder) {
+                    if (historyLoading || !hasOlderMessages || !historyCursor) return;
+            } else {
+                    if (receiver === currentReceiver) return;
+                    currentReceiver = receiver;
+                    historyRequestId += 1;
+                    historyCursor = null;
+                    hasOlderMessages = false;
+                    messages.replaceChildren();
+                    renderedMessageIds.clear();
+            }
+
+            const requestId = historyRequestId;
+            const oldHeight = messages.scrollHeight;
+            historyLoading = true;
+            const request = { to: receiver };
+            if (loadOlder) request.before = historyCursor;
+
+            socket.timeout(10000).emit("fetchMessages", request, (timeoutError, response) => {
+                    if (requestId !== historyRequestId || receiver !== currentReceiver) return;
+                    historyLoading = false;
+
+                    if (timeoutError || !response?.ok) {
+                        showStatus(response?.error || "Could not load chat history.");
+                        return;
+                    }
+
+                    const batch = response.messages || [];
+                    (loadOlder ? batch.slice().reverse() : batch)
+                        .forEach(msg => showMessage(msg, loadOlder));
+                    historyCursor = response.nextCursor || null;
+                    hasOlderMessages = Boolean(response.hasMore);
+
+                    if (!batch.length && !loadOlder) {
+                        const notice = document.createElement("div");
+                        notice.textContent = `No previous messages with ${receiver}.`;
+                        messages.appendChild(notice);
+                    }
+
+                    if (loadOlder) {
+                        messages.scrollTop = messages.scrollHeight - oldHeight;
+                    } else {
+                        messages.scrollTop = messages.scrollHeight;
+                        showStatus(`Chat with ${receiver}`);
+                    }
+            });
+        }
+
+        function joinCurrentUser() {
+            if (!userId || !socket.connected || joined || joining) return;
+
+            joining = true;
+            setControls();
+            showStatus("Joining chat...");
+            socket.timeout(10000).emit("join", userId, (timeoutError, response) => {
+                    joining = false;
+                    if (timeoutError || !response?.ok) {
+                        joined = false;
+                        setControls();
+                        showStatus(response?.error || "Could not join chat.");
+                        return;
+                    }
+
+                    joined = true;
+                    setControls();
+                    saveSession();
+                    showStatus(`Joined as ${userId}`);
+                    loadMessages();
+            });
+        }
+
+        joinBtn.addEventListener("click", () => {
+            if (joined) {
+                joinBtn.disabled = true;
+                showStatus("Leaving current chat...");
+                socket.timeout(10000).emit("leave", (timeoutError, response) => {
+                    if (timeoutError || !response?.ok) {
+                        setControls();
+                        showStatus(response?.error || "Could not leave the current chat.");
+                        return;
+                    }
+
+                    joined = false;
+                    joining = false;
+                    userId = "";
+                    currentReceiver = "";
+                    historyRequestId += 1;
+                    historyCursor = null;
+                    hasOlderMessages = false;
+                    historyLoading = false;
+                    renderedMessageIds.clear();
+                    messages.replaceChildren();
+                    userInput.value = "";
+                    saveSession();
+                    setControls();
+                    showStatus("Enter your user ID to join another chat.");
+                    userInput.focus();
+                });
                 return;
             }
 
-            currentUserId = userId;
-            socket.emit("join", userId);
-            joined = true;
-            userIdInput.disabled = true;
-            setControlsState();
+            userId = userInput.value.trim();
+            if (!userId || userId.length > 64) {
+                    return showStatus("Enter a valid user ID (maximum 64 characters).");
+            }
+            joinCurrentUser();
+        });
 
-            showMessage("You joined as " + userId);
-        };
-
-        sendBtn.onclick = () => {
-            const to = receiverInput.value.trim();
+        sendBtn.addEventListener("click", () => {
+            const recipients = getRecipients();
             const message = messageInput.value.trim();
 
             if (!joined) {
-                alert("Join the chat first");
-                return;
+                return showStatus("Join the chat first.");
+            }
+            if (
+                !recipients.length ||
+                recipients.length > 50 ||
+                recipients.includes(userId)
+            ) {
+                return showStatus("Enter valid recipient IDs.");
             }
 
-            if (!to || !message) {
-                alert("Enter receiver ID and message");
-                return;
+            if (!message || message.length > 2000) {
+                return showStatus("Message must be 1–2000 characters.");
             }
 
-            socket.emit("privateMessage", { to, from: currentUserId, message });
+            sendBtn.disabled = true;
+            socket.timeout(10000).emit("privateMessage", { to: recipients, message }, (timeoutError, response) => {
+                sendBtn.disabled = !joined;
+                if (timeoutError || !response?.ok) {
+                    return showStatus(response?.error || "Message could not be sent.");
+                }
 
-            showMessage("You to " + to + ": " + message);
-            messageInput.value = "";
-        };
+                const sentMessage = response.messages.find(
+                    msg => msg.to === currentReceiver
+                );
 
-        messageInput.addEventListener("keydown", (event) => {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                sendBtn.click();
-            }
+                if (sentMessage) {
+                    showMessage(sentMessage);
+                    messages.scrollTop = messages.scrollHeight;
+                } else if (recipients.length > 1) {
+                    const notice = document.createElement("div");
+                    notice.textContent = `You to ${recipients.join(", ")}: ${message}`;
+                    messages.appendChild(notice);
+                    messages.scrollTop = messages.scrollHeight;
+                }
+
+                messageInput.value = "";
+                showStatus("Message sent successfully.");
+            });
         });
 
-        socket.on("privateMessage", (data) => {
-            const sender = data && data.from ? data.from : "Someone";
-            showMessage(sender + ": " + data.message);
+        messageInput.addEventListener("keydown", event => {
+            if (event.key === "Enter") sendBtn.click();
         });
 
+        receiverInput.addEventListener("input", () => {
+            saveSession();
+            loadMessages();
+        });
+        messages.addEventListener("scroll", () => {
+            if (messages.scrollTop <= 40) loadMessages(true);
+        });
+        socket.on("privateMessage", msg => {
+            if ( joined && msg.to === userId && msg.from === currentReceiver
+) {
+                showMessage(msg);
+                messages.scrollTop = messages.scrollHeight;
+            }
+        });
         socket.on("connect", () => {
-            joined = false;
-            currentUserId = "";
-            userIdInput.disabled = false;
-            setControlsState();
+            if (userId) {
+                joined = false;
+                currentReceiver = "";
+                historyRequestId += 1;
+                historyCursor = null;
+                hasOlderMessages = false;
+                historyLoading = false;
+                joinCurrentUser();
+            } else {
+                showStatus("Connected. Join the chat to start messaging.");
+                setControls();
+            }
         });
 
-        setControlsState();
+        socket.on("disconnect", () => {
+            joined = false;
+            currentReceiver = "";
+            historyRequestId += 1;
+            historyCursor = null;
+            hasOlderMessages = false;
+            historyLoading = false;
+            setControls();
+            showStatus("Disconnected. Please reconnect.");
+        });
+
+        setControls();
     </script>
 </body>
 </html>
