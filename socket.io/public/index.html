@@ -32,6 +32,19 @@
         #status {
             min-height: 1em;
         }
+        #presence {
+            min-height: 1em;
+            color: #555;
+        }
+        .chat-message {
+            margin: 6px 0;
+            overflow-wrap: anywhere;
+        }
+        .delivery-status {
+            margin-left: 8px;
+            color: #666;
+            font-size: 0.85em;
+        }
     </style>
 </head>
 <body>
@@ -47,6 +60,7 @@
 
     <label for="receiverId">Recipient ID(s)</label>
     <input id="receiverId" placeholder="user2 or user2,user3">
+    <p id="presence" role="status" aria-live="polite"></p>
 
     <div id="messages"></div>
 
@@ -61,6 +75,7 @@
         const messageInput = document.getElementById("messageInput");
         const messages = document.getElementById("messages");
         const status = document.getElementById("status");
+        const presence = document.getElementById("presence");
         const joinBtn = document.getElementById("joinBtn");
         const sendBtn = document.getElementById("sendBtn");
         const SESSION_STORAGE_KEY = "socketChatSession";
@@ -74,6 +89,8 @@
         let historyLoading = false;
         let historyRequestId = 0;
         const renderedMessageIds = new Set();
+        const renderedDeliveryStatuses = new Map();
+        const onlineUserIds = new Set();
 
         try {
             const savedSession = JSON.parse(localStorage.getItem(SESSION_STORAGE_KEY) || "null");
@@ -110,6 +127,40 @@
             status.textContent = text;
         }
 
+        function updatePresenceDisplay() {
+            const recipients = getRecipients();
+            if (!joined || !socket.connected) {
+                presence.textContent = recipients.length
+                    ? "Join the chat to see presence."
+                    : "";
+                return;
+            }
+            if (recipients.length !== 1) {
+                presence.textContent = recipients.length > 1
+                    ? "Presence is shown for one recipient at a time."
+                    : "";
+                return;
+            }
+            const recipient = recipients[0];
+            presence.textContent = `${recipient} is ${onlineUserIds.has(recipient) ? "online" : "offline"}.`;
+        }
+
+        function updateDeliveryStatus(messageId, messageStatus) {
+            if (!messageId) return;
+            const id = String(messageId);
+            const normalizedStatus = messageStatus === "delivered" ? "delivered" : "sent";
+            renderedDeliveryStatuses.set(id, normalizedStatus);
+            const deliveryElement = document.querySelector(
+                `[data-message-id="${CSS.escape(id)}"] .delivery-status`
+            );
+            if (deliveryElement) {
+                deliveryElement.textContent = normalizedStatus === "delivered"
+                    ? "Delivered"
+                    : "Sent";
+                deliveryElement.setAttribute("aria-label", normalizedStatus);
+            }
+        }
+
         function setControls() {
             joinBtn.disabled = !socket.connected || joining;
             joinBtn.textContent = joined ? "Switch User" : joining ? "Joining..." : "Join Chat";
@@ -126,17 +177,35 @@
             )];
         }
 
-        function showMessage(msg, prepend = false) {
+        function showMessage(msg, prepend = false, senderLabel = null) {
             const id = msg.id || msg._id;
             if (id && renderedMessageIds.has(String(id))) return;
 
             const div = document.createElement("div");
-            div.textContent = `${msg.from === userId ? "You" : msg.from}: ${msg.message}`;
-            if (id) renderedMessageIds.add(String(id));
+            div.className = "chat-message";
+            if (id) {
+                div.dataset.messageId = String(id);
+                renderedMessageIds.add(String(id));
+            }
+            const content = document.createElement("span");
+            content.textContent = `${senderLabel || (msg.from === userId ? "You" : msg.from)}: ${msg.message}`;
+            div.appendChild(content);
+            if (msg.from === userId) {
+                const delivery = document.createElement("span");
+                delivery.className = "delivery-status";
+                delivery.setAttribute("aria-label", "sent");
+                div.appendChild(delivery);
+            }
             if (prepend) {
                     messages.prepend(div);
             } else {
                     messages.appendChild(div);
+            }
+            if (msg.from === userId) {
+                updateDeliveryStatus(
+                    id,
+                    renderedDeliveryStatuses.get(String(id)) || msg.status || "sent"
+                );
             }
         }
 
@@ -150,6 +219,8 @@
                     hasOlderMessages = false;
                     historyLoading = false;
                     messages.replaceChildren();
+                    renderedMessageIds.clear();
+                    renderedDeliveryStatuses.clear();
                     return;
             }
 
@@ -165,6 +236,7 @@
                     hasOlderMessages = false;
                     messages.replaceChildren();
                     renderedMessageIds.clear();
+                    renderedDeliveryStatuses.clear();
             }
 
             const requestId = historyRequestId;
@@ -199,6 +271,7 @@
                     } else {
                         messages.scrollTop = messages.scrollHeight;
                         showStatus(`Chat with ${receiver}`);
+                        updatePresenceDisplay();
                     }
             });
         }
@@ -222,6 +295,7 @@
                     setControls();
                     saveSession();
                     showStatus(`Joined as ${userId}`);
+                    updatePresenceDisplay();
                     loadMessages();
             });
         }
@@ -246,23 +320,23 @@
                     hasOlderMessages = false;
                     historyLoading = false;
                     renderedMessageIds.clear();
+                    renderedDeliveryStatuses.clear();
                     messages.replaceChildren();
                     userInput.value = "";
                     saveSession();
                     setControls();
                     showStatus("Enter your user ID to join another chat.");
+                    updatePresenceDisplay();
                     userInput.focus();
                 });
                 return;
             }
-
             userId = userInput.value.trim();
             if (!userId || userId.length > 64) {
                     return showStatus("Enter a valid user ID (maximum 64 characters).");
             }
             joinCurrentUser();
         });
-
         sendBtn.addEventListener("click", () => {
             const recipients = getRecipients();
             const message = messageInput.value.trim();
@@ -297,9 +371,9 @@
                     showMessage(sentMessage);
                     messages.scrollTop = messages.scrollHeight;
                 } else if (recipients.length > 1) {
-                    const notice = document.createElement("div");
-                    notice.textContent = `You to ${recipients.join(", ")}: ${message}`;
-                    messages.appendChild(notice);
+                    response.messages.forEach(msg => {
+                        showMessage(msg, false, `You to ${msg.to}`);
+                    });
                     messages.scrollTop = messages.scrollHeight;
                 }
 
@@ -314,19 +388,46 @@
 
         receiverInput.addEventListener("input", () => {
             saveSession();
+            updatePresenceDisplay();
             loadMessages();
         });
         messages.addEventListener("scroll", () => {
             if (messages.scrollTop <= 40) loadMessages(true);
         });
         socket.on("privateMessage", msg => {
-            if ( joined && msg.to === userId && msg.from === currentReceiver
-) {
+            if (joined && msg.to === userId && msg.id) {
+                socket.emit("messageDelivered", msg.id);
+            }
+            if (joined && msg.to === userId && msg.from === currentReceiver) {
                 showMessage(msg);
                 messages.scrollTop = messages.scrollHeight;
             }
         });
+        socket.on("presenceSnapshot", data => {
+            onlineUserIds.clear();
+            (data?.users || []).forEach(id => onlineUserIds.add(id));
+            updatePresenceDisplay();
+        });
+        socket.on("userPresence", data => {
+            if (!data || typeof data.userId !== "string") return;
+            if (data.online) {
+                onlineUserIds.add(data.userId);
+            } else {
+                onlineUserIds.delete(data.userId);
+            }
+            updatePresenceDisplay();
+        });
+        socket.on("messageStatus", data => {
+            if (
+                data?.status === "delivered" &&
+                data.from === userId &&
+                (data.to === currentReceiver || getRecipients().includes(data.to))
+            ) {
+                updateDeliveryStatus(data.id, data.status);
+            }
+        });
         socket.on("connect", () => {
+            onlineUserIds.clear();
             if (userId) {
                 joined = false;
                 currentReceiver = "";
@@ -338,10 +439,13 @@
             } else {
                 showStatus("Connected. Join the chat to start messaging.");
                 setControls();
+                updatePresenceDisplay();
             }
         });
 
         socket.on("disconnect", () => {
+            onlineUserIds.clear();
+            updatePresenceDisplay();
             joined = false;
             currentReceiver = "";
             historyRequestId += 1;

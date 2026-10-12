@@ -13,12 +13,19 @@ const PAGE_SIZE = 50;
 const MAX_USER_ID_LENGTH = 64;
 const MAX_MESSAGE_LENGTH = 2000;
 const MAX_RECIPIENTS = 50;
+const onlineUsers = new Map();
 const messageSchema = new mongoose.Schema({
 
     from: { type: String, required: true, maxlength: MAX_USER_ID_LENGTH },
     to: { type: String, required: true, maxlength: MAX_USER_ID_LENGTH },
     message: { type: String, required: true, maxlength: MAX_MESSAGE_LENGTH },
-    timestamp: { type: Date, default: Date.now }
+    timestamp: { type: Date, default: Date.now },
+    status: {
+        type: String,
+        enum: ["sent", "delivered"],
+        default: "sent"
+    },
+    deliveredAt: { type: Date, default: null }
 });
 messageSchema.index({ from: 1, to: 1, timestamp: -1, _id: -1 });
 const Message = mongoose.model("Message", messageSchema);
@@ -45,8 +52,26 @@ function serializeMessage(message) {
         from: message.from,
         to: message.to,
         message: message.message,
-        timestamp: message.timestamp
+        timestamp: message.timestamp,
+        status: message.status || "sent",
+        deliveredAt: message.deliveredAt || null
     };
+}
+function removeUserSocket(socket) {
+    const userId = socket.data.userId;
+    if (!userId) return;
+
+    const sockets = onlineUsers.get(userId);
+    if (sockets) {
+        sockets.delete(socket.id);
+        if (sockets.size === 0) {
+            onlineUsers.delete(userId);
+            io.emit("userPresence", { userId, online: false });
+        }
+    }
+
+    socket.leave(`user:${userId}`);
+    delete socket.data.userId;
 }
 io.on("connection", (socket) => {
     socket.on("join", (userId, callback) => {
@@ -57,19 +82,29 @@ io.on("connection", (socket) => {
                 error: "Enter a valid user ID (maximum 64 characters)."
             });
         }
-        if (socket.data.userId) {
-            socket.leave(`user:${socket.data.userId}`);
+        if (socket.data.userId === userId) {
+            socket.emit("presenceSnapshot", { users: [...onlineUsers.keys()] });
+            return acknowledge(callback, { ok: true, userId });
         }
+        removeUserSocket(socket);
+
+        let sockets = onlineUsers.get(userId);
+        const cameOnline = !sockets;
+        if (!sockets) {
+            sockets = new Set();
+            onlineUsers.set(userId, sockets);
+        }
+        sockets.add(socket.id);
         socket.data.userId = userId;
         socket.join(`user:${userId}`);
+        if (cameOnline) {
+            io.emit("userPresence", { userId, online: true });
+        }
+        socket.emit("presenceSnapshot", { users: [...onlineUsers.keys()] });
         acknowledge(callback, { ok: true, userId });
     });
     socket.on("leave", (callback) => {
-        const userId = socket.data.userId;
-        if (userId) {
-            socket.leave(`user:${userId}`);
-            delete socket.data.userId;
-        }
+        removeUserSocket(socket);
         acknowledge(callback, { ok: true });
     });
 
@@ -128,11 +163,7 @@ io.on("connection", (socket) => {
             const messages = results.slice(0, PAGE_SIZE);
             const oldest = messages[messages.length - 1];
             acknowledge(callback, {
-                ok: true,
-                messages: messages.reverse().map(serializeMessage),
-                hasMore,
-                nextCursor: hasMore && oldest
-                    ? {
+                ok: true,messages: messages.reverse().map(serializeMessage),hasMore,nextCursor: hasMore && oldest? {
                         timestamp: oldest.timestamp.toISOString(),
                         id: String(oldest._id)
                     }
@@ -144,6 +175,32 @@ io.on("connection", (socket) => {
                 ok: false,
                 error: "Could not load messages."
             });
+        }
+    });
+    socket.on("messageDelivered", async (messageId) => {
+        const recipient = socket.data.userId;
+        if (!recipient ||typeof messageId !== "string" ||!mongoose.Types.ObjectId.isValid(messageId)) {
+            return;
+        }
+        try {
+            const message = await Message.findOneAndUpdate(
+                {
+                    _id: new mongoose.Types.ObjectId(messageId),to: recipient,status: "sent"
+                },
+                {
+                    $set: {
+                        status: "delivered",deliveredAt: new Date()
+                    }
+                },
+                { returnDocument: "after" }
+            ).lean();
+            if (message) {
+                io.to(`user:${message.from}`).emit("messageStatus", {
+                    id: String(message._id),from: message.from,to: message.to,status: message.status,deliveredAt: message.deliveredAt
+                });
+            }
+        } catch (error) {
+            console.error("Could not update message delivery status:", error);
         }
     });
     socket.on("privateMessage", async (data, callback) => {
@@ -206,6 +263,9 @@ io.on("connection", (socket) => {
                 error: "Message could not be sent."
             });
         }
+    });
+    socket.on("disconnect", () => {
+        removeUserSocket(socket);
     });
 });
 mongoose.connect(DB_URL)
