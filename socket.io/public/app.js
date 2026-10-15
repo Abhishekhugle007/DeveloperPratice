@@ -90,9 +90,26 @@
         setAuthMessage("");
     }
 
+    function nameParts(name) {
+        return String(name || "?").trim().replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+            .split(/\s+/).filter(Boolean);
+    }
+
     function initials(name) {
-        return String(name || "?").trim().split(/\s+/).slice(0, 2)
+        return nameParts(name).slice(0, 2)
             .map(part => part.charAt(0).toUpperCase()).join("") || "?";
+    }
+
+    function matchesUserSearch(name, search) {
+        if (!search) return true;
+        const parts = nameParts(name);
+        const normalizedName = parts.join(" ").toLowerCase();
+        const searchInitials = parts.map(part => part.charAt(0)).join("").toLowerCase();
+        const matchesName = search.includes(" ")
+            ? normalizedName.includes(search)
+            : parts.some(part => part.toLowerCase().startsWith(search))
+                || normalizedName.replace(/\s/g, "").startsWith(search);
+        return matchesName || searchInitials === search;
     }
 
     function renderFormattedText(element, value) {
@@ -430,7 +447,7 @@
 
     function renderUsers() {
         const search = elements.userSearch.value.trim().toLowerCase();
-        const matching = users.filter(user => user.name.toLowerCase().includes(search));
+        const matching = users.filter(user => matchesUserSearch(user.name, search));
         elements.userList.replaceChildren();
         if (!matching.length) {
             const empty = document.createElement("p");
