@@ -2,6 +2,17 @@
 
 A small Express, Socket.IO, MongoDB, and vanilla JavaScript private chat application. Account identities come from verified JWTs; the browser cannot choose a sender ID.
 
+## Backend modules
+
+- `server.js` loads environment variables, connects to MongoDB, starts the HTTP listener, and reports startup failures. `app.js` creates Express and Socket.IO and wires middleware, routes, and socket handlers. The frontend markup, styles, and client logic are in `public/index.html`, `public/styles.css`, and `public/app.js`, respectively.
+- `config/constants.js` contains application limits, JWT identifiers, patterns, and attachment definitions; `config/database.js` owns MongoDB connection lifecycle.
+- `middleware/auth.js` validates HTTP bearer tokens and administrator roles. `middleware/errorHandler.js` formats upload, body-parser, and unexpected request errors.
+- `utils/` contains input validation, serializers/query helpers, attachment validation/storage-name helpers, and the rate limiter.
+- `services/` owns token creation/user authentication and message mutation broadcasting.
+- `routes/` groups the existing auth, user/file, attachment, message, and admin endpoints.
+- `sockets/` handles authenticated Socket.IO connections, chat events, and online presence.
+- `models/` retains the existing Mongoose user and message models; `public/` remains the frontend, and `private_uploads/` stays outside static serving.
+
 ## Requirements
 
 - Node.js 20 or newer

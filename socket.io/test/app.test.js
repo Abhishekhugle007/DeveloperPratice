@@ -172,11 +172,22 @@ test("unknown API routes and wrong methods return useful JSON 404 responses", as
     });
 });
 
-test("message composer has send and attachment controls without removed icons", () => {
+test("message composer assets are served separately without removed icons", async () => {
     const html = fs.readFileSync(
         path.join(__dirname, "..", "public", "index.html"),
         "utf8"
     );
+    const script = fs.readFileSync(
+        path.join(__dirname, "..", "public", "app.js"),
+        "utf8"
+    );
+    const stylesheet = fs.readFileSync(
+        path.join(__dirname, "..", "public", "styles.css"),
+        "utf8"
+    );
+    assert.match(html, /href="\/styles\.css"/);
+    assert.match(html, /src="\/socket\.io\/socket\.io\.js"/);
+    assert.match(html, /src="\/app\.js"/);
     for (const id of [
         "messageInput",
         "attachmentInput",
@@ -184,16 +195,26 @@ test("message composer has send and attachment controls without removed icons", 
     ]) {
         assert.match(html, new RegExp(`id="${id}"`));
     }
-    assert.match(html, /elements\.composer\.addEventListener\("submit"/);
-    assert.match(html, /socketRequest\("privateMessage"/);
-    assert.match(html, /apiRequest\("\/api\/attachments"/);
-    assert.match(html, /renderMessageActions/);
-    assert.match(html, /window\.confirm/);
-    assert.match(html, /messageUpdated/);
-    assert.match(html, /messageDeleted/);
-    assert.match(html, /\/api\/files/);
-    assert.match(html, /drop", event =>/);
+    assert.match(script, /elements\.composer\.addEventListener\("submit"/);
+    assert.match(script, /socketRequest\("privateMessage"/);
+    assert.match(script, /apiRequest\("\/api\/attachments"/);
+    assert.match(script, /renderMessageActions/);
+    assert.match(script, /window\.confirm/);
+    assert.match(script, /messageUpdated/);
+    assert.match(script, /messageDeleted/);
+    assert.match(script, /\/api\/files/);
+    assert.match(script, /drop", event =>/);
+    assert.match(stylesheet, /\.composer/);
     assert.doesNotMatch(html, /id="(?:formatToggle|emojiToggle|chatActions|moreActions)"/);
+
+    const [cssResponse, scriptResponse] = await Promise.all([
+        request("/styles.css"),
+        request("/app.js")
+    ]);
+    assert.equal(cssResponse.status, 200);
+    assert.equal(scriptResponse.status, 200);
+    assert.match(cssResponse.headers.get("content-type"), /text\/css/);
+    assert.match(scriptResponse.headers.get("content-type"), /javascript/);
 });
 
 test("invalid JWTs cannot access private APIs or establish sockets", async () => {
