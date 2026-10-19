@@ -104,7 +104,10 @@
         if (!search) return true;
         const parts = nameParts(name);
         const normalizedName = parts.join(" ").toLowerCase();
-        const searchInitials = parts.map(part => part.charAt(0)).join("").toLowerCase();
+        const searchInitials = parts
+        .map(part => part.charAt(0))
+        .join("")
+        .toLowerCase();
         const matchesName = search.includes(" ")
             ? normalizedName.includes(search)
             : parts.some(part => part.toLowerCase().startsWith(search))

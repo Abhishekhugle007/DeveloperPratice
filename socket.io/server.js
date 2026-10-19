@@ -5,19 +5,16 @@ const { connectDatabase, disconnectDatabase } = require("./config/database");
 const { createChatServer } = require("./app");
 const { validateRegistration } = require("./utils/validation");
 const { serializeMessage, conversationQuery } = require("./utils/messageUtils");
-
 async function startServer() {
     const mongoUri = process.env.MONGODB_URI;
     if (!mongoUri) throw new Error("MONGODB_URI must be set.");
     if (!process.env.JWT_SECRET || Buffer.byteLength(process.env.JWT_SECRET, "utf8") < 32) {
         throw new Error("JWT_SECRET must be set to a random value of at least 32 bytes.");
     }
-
     const port = Number(process.env.PORT || 3000);
     if (!Number.isInteger(port) || port < 1 || port > 65535) {
         throw new Error("PORT must be an integer between 1 and 65535.");
     }
-
     let chatServer;
     try {
         await connectDatabase(mongoUri);
@@ -36,7 +33,6 @@ async function startServer() {
         throw error;
     }
 }
-
 if (require.main === module) {
     startServer().catch(error => {
         const safeErrors = new Set([
@@ -56,7 +52,6 @@ if (require.main === module) {
         process.exitCode = 1;
     });
 }
-
 module.exports = {
     createChatServer,
     startServer,

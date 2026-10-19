@@ -38,7 +38,7 @@ function registerSockets(dependencies){
         }, Math.max(0, socket.data.tokenExpiresAt - Date.now()));
         expiryTimer.unref?.();
 
-        socket.use((packet, next) => {
+        socket.use((_packet, next) => {
             if (Date.now() >= socket.data.tokenExpiresAt) {
                 socket.emit("authError", { error: "Your session expired. Please sign in again." });
                 socket.disconnect(true);
