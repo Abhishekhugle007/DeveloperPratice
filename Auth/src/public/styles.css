@@ -1,0 +1,95 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 24px;
+    background: #f2f2f2;
+}
+
+main {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 24px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+h1 {
+    margin-top: 0;
+}
+
+.intro,
+.note {
+    color: #555;
+}
+
+.tabs,
+.account-actions {
+    margin: 16px 0;
+}
+
+.tab {
+    border: 1px solid #ccc;
+    background: #eee;
+    cursor: pointer;
+}
+
+.tab.active {
+    background: #ddd;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+input {
+    padding: 8px;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+}
+
+button {
+    padding: 8px 12px;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+form button,
+.account-actions button {
+    background: #e8e8e8;
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.feedback {
+    color: red;
+}
+
+.feedback.success {
+    color: green;
+}
+
+.note {
+    margin-top: 16px;
+    text-align: center;
+}
+
+[hidden] {
+    display: none;
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 12px;
+    }
+
+    main {
+        padding: 18px;
+    }
+}
