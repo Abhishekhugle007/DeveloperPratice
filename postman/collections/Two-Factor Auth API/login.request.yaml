@@ -1,0 +1,28 @@
+$kind: http-request
+examples: .resources/login.resources/examples
+order: 3000
+method: POST
+url: http://localhost:3000/v1/user/login
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "email": "au@gmail.com",
+      "password": "Password@123"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status is 200 - Logged in", () => {
+          pm.response.to.have.status(200);
+      });
+
+      pm.test("Response has userId and accessToken", () => {
+          const json = pm.response.json();
+          pm.expect(json).to.have.nested.property("data.userId");
+          pm.expect(json).to.have.nested.property("data.accessToken");
+          pm.expect(json.data.accessToken).to.be.a("string").and.not.empty;
+      });
+    language: text/javascript

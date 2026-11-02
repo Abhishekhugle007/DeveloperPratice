@@ -1,0 +1,28 @@
+$kind: http-request
+name: verify-2fa
+url: http://localhost:3000/v1/user/verify-2fa
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: "{\r
+
+    \  \"recoveryCodes\":\"vls4CYs8Xa\"\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status is 201 - User Registered", () => {
+          pm.response.to.have.status(201);
+      });
+
+      pm.test("Response has userId", () => {
+          const json = pm.response.json();
+          pm.expect(json).to.have.nested.property("data.userId");
+          pm.environment.set("userId", json.data.userId);
+      });
+    language: text/javascript
+examples: .resources/verify-2fa-1.resources/examples
+order: 2000

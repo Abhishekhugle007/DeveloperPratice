@@ -1,0 +1,9 @@
+$kind: http-request
+name: ME
+description: ""
+url: http://localhost:3000/v1/user/me
+method: GET
+body:
+  type: json
+  content: ""
+order: 4328

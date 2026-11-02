@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{baseUrl}}/v1/user/logout"
+method: PUT
+order: 7000

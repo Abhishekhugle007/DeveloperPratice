@@ -1,0 +1,24 @@
+$kind: http-request
+url: http://localhost:3000/v1/user/recover-2fa
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "recoveryCode": "REPLACE_WITH_UNUSED_10_CHARACTER_CODE"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Recovery request succeeds", () => {
+          pm.response.to.have.status(200);
+      });
+
+      if (pm.response.code === 200) {
+          const json = pm.response.json();
+          pm.expect(json).to.have.nested.property("data.accessToken");
+      }
+    language: text/javascript
+order: 8000

@@ -1,0 +1,8 @@
+$kind: collection
+name: 'Two-Factor Auth API'
+description: |-
+  Collection for testing the Two-Factor Authentication backend.
+  Flow: Register → Login → Activate 2FA
+variables:
+  - key: baseUrl
+    value: 'http://localhost:3000'
