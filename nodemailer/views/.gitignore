@@ -1,0 +1,5 @@
+.env
+.auth-store.json
+.auth-store.json.tmp
+.accounts.json
+.accounts.json.tmp

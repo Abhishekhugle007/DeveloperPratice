@@ -1,0 +1,17 @@
+$kind: http-request
+url: http://localhost:8000/mail
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"receiver_id\":\"Abhishekh@gmail.com\",\r
+
+    \    \"text\":\"this is  my text\",\r
+
+    \    \"html\":\"<h1> I am Developer  <h1>\",\r
+
+    \    \"subject\": \"this is Subject\"\r
+
+    }"
+order: 1000

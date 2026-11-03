@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mail </title>
+  <style>
+    :root {
+      color-scheme: light;
+      font: 16px/1.5 system-ui, sans-serif;
+      background: #f4f6fb;
+      color: #172033;
+    }
+
+    body {
+      max-width: 720px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    main {
+      padding: 28px;
+      background: white;
+      border: 1px solid #dce2ed;
+      border-radius: 12px;
+      box-shadow: 0 8px 28px #17203312;
+    }
+
+    h1 { margin-top: 0; }
+
+    label {
+      display: block;
+      margin-top: 16px;
+      font-weight: 600;
+    }
+
+    input, textarea {
+      box-sizing: border-box;
+      display: block;
+      width: 100%;
+      margin-top: 6px;
+      padding: 10px 12px;
+      border: 1px solid #b8c2d3;
+      border-radius: 6px;
+      font: inherit;
+    }
+
+    textarea { min-height: 100px; resize: vertical; }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 18px;
+      border: 0;
+      border-radius: 6px;
+      background: #2563eb;
+      color: white;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    button:disabled { opacity: 0.6; cursor: wait; }
+    #result { white-space: pre-wrap; overflow-wrap: anywhere; }
+    #result.error { color: #b42318; }
+    .hint { color: #526078; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <main>
+
+
+
+
+    <div id="email-template">
+      <h1>Welcome to Etech Global Services</h1>
+      <p>Dear [User],</p>
+      <p>We are thrilled to have you on board! Thank you for signing up and joining our community. We are committed to providing you with the best experience possible.</p>
+      <p>If you have any questions or need assistance, please don't hesitate to reach out to our support team. We are here to help you every step of the way.</p>
+      <p>Once again, welcome to our website! We look forward to serving you and making your experience with us enjoyable.</p>
+      <p>Best regards,<br>The Team</p>
+      <p>Sincerely,<br>The Team</p>
+    </div>
+
+    <h2>Send this email</h2>
+    <form id="mail-form">
+      <label>
+        To
+        <input name="to" type="text" autocomplete="email" placeholder="person@example.com, another@example.com" required>
+        <span class="hint">Separate multiple addresses with commas or semicolons.</span>
+      </label>
+
+      <label>
+        CC (optional)
+        <input name="cc" type="text" placeholder="person@example.com">
+      </label>
+
+      <label>
+        BCC (optional)
+        <input name="bcc" type="text" placeholder="person@example.com">
+      </label>
+
+      <label>
+        Subject
+        <input name="subject" value="Welcome to Etech Global Services" required>
+      </label>
+
+      <label>
+        Email HTML
+        <textarea id="html-body" name="html" required></textarea>
+      </label>
+
+      <label>
+        Attachment (optional, maximum 5 MB)
+        <input id="attachment" name="attachment" type="file">
+      </label>
+
+      <button id="submit-button" type="submit">Send email</button>
+    </form>
+
+    <h2>Result</h2>
+    <pre id="result" aria-live="polite">No email sent yet.</pre>
+  </main>
+
+  <script>
+    const form = document.querySelector("#mail-form");
+    const attachmentInput = document.querySelector("#attachment");
+    const button = document.querySelector("#submit-button");
+    const result = document.querySelector("#result");
+    const maxFileSize = 5 * 1024 * 1024;
+
+    form.elements.html.value =
+      document.querySelector("#email-template").innerHTML.trim();
+
+    function readFile(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const fileContent = reader.result.split(",")[1];
+          resolve(fileContent);
+        };
+        reader.onerror = () => reject(reader.error);
+        reader.readAsDataURL(file);
+      });
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const file = attachmentInput.files[0];
+      const payload = {
+        to: form.elements.to.value.trim(),
+        cc: form.elements.cc.value.trim(),
+        bcc: form.elements.bcc.value.trim(),
+        subject: form.elements.subject.value.trim(),
+        html: form.elements.html.value.trim(),
+      };
+
+      if (file && file.size > maxFileSize) {
+        result.className = "error";
+        result.textContent = "The attachment must be 5 MB or smaller.";
+        return;
+      }
+
+      button.disabled = true;
+      button.textContent = "Sending…";
+      result.className = "";
+      result.textContent = "Sending email…";
+
+      try {
+        if (file) {
+          payload.attachment = {
+            filename: file.name,
+            content: await readFile(file),
+          };
+        }
+
+        const response = await fetch("/mail", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const body = await response.json();
+        result.className = response.ok ? "" : "error";
+        result.textContent = `HTTP ${response.status}\n${JSON.stringify(body, null, 2)}`;
+      } catch (error) {
+        result.className = "error";
+        result.textContent = `Request failed: ${error.message}`;
+      } finally {
+        button.disabled = false;
+        button.textContent = "Send email";
+      }
+    });
+  </script>
+</body>
+</html>
