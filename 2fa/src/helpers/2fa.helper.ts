@@ -1,0 +1,35 @@
+import { customAlphabet } from "nanoid"
+import OTPAuth from "otpauth"
+import { hashValue } from "./encryption.helper"
+
+export const generateTOTP =(email:string, base32?: string) =>{
+       const totp = new OTPAuth.TOTP({
+        issuer: "Two-FA",
+        label:email,
+        algorithm: "SHA1",
+        digits:6,
+        period:30,
+        ...(base32 ? { secret: OTPAuth.Secret.fromBase32(base32) } : {}),
+       })
+
+       return totp
+}
+
+export const generateRecoveryCodes = async (count: number) =>{
+    const ALPHA_NUMERIC_SEQ = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+
+    const recoveryCodes: Record<'plainText' | "hashed", string[]> = {
+        plainText: [],
+        hashed:[]
+    }
+    for(let i=1; i<=count; i++){
+       const recoveryCode = customAlphabet(ALPHA_NUMERIC_SEQ, 10)()
+       recoveryCodes.plainText.push(recoveryCode)
+
+       const hashedRecoveryCode = await hashValue(recoveryCode)
+
+       recoveryCodes.hashed.push(hashedRecoveryCode)
+    }
+
+    return recoveryCodes
+}
