@@ -89,8 +89,12 @@ app.post('/login', (req, res) => {
 
   const normalizedEmail = email.trim().toLowerCase();
   const account = fileStorage.accounts[normalizedEmail];
-  if (!account || !fileStorage.passwordMatches(account, password)) {
-    return res.status(401).json({ success: false, message: 'Email or password is incorrect.' });
+  if (!account || !fileStorage.passwordMatches(account, password))
+    {
+    return res.status(401).json({ 
+    success: false, 
+    message: 'Email or password is incorrect.' 
+  });
   }
   if (account.verified !== true) {
     return res.status(403).json({ success: false, message: 'Verify your email address before signing in.' });
@@ -194,8 +198,9 @@ app.post('/verify-email', (req, res) => {
     return res.status(400).json({ success: false, message: 'The verification code is incorrect.' });
   }
 
-  fileStorage.accounts[normalizedEmail] = Object.assign({}, pendingVerification.passwordRecord, {
-    verified: true,
+  fileStorage.accounts[normalizedEmail] = Object.assign({}, 
+  pendingVerification.passwordRecord, {
+  verified: true,
   });
   try {
     fileStorage.saveAccounts();
