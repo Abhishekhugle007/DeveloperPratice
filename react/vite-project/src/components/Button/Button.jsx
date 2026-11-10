@@ -1,12 +1,9 @@
-function Button({text} ,onClickHandler){
-
-  console.log(text); // object
-  return(
-  <button onClick={ onClickHandler}
-    className="btn"
-  >
-    {text} 
+function Button({ text, onClickHandler }) {
+  return (
+    <button onClick={onClickHandler}>
+      {text}
     </button>
   );
 }
+
 export default Button

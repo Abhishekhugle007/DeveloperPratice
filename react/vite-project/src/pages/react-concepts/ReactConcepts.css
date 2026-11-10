@@ -1,0 +1,141 @@
+.concept-page {
+  color: #252b3b;
+  font-family: system-ui, sans-serif;
+  margin: 2rem auto;
+  max-width: 760px;
+  padding: 1.5rem;
+}
+
+.concept-eyebrow {
+  color: #5965c9;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.concept-page h1 {
+  font-size: clamp(2rem, 6vw, 3rem);
+  margin: 0 0 0.75rem;
+}
+
+.concept-page p {
+  line-height: 1.6;
+}
+
+.concept-list {
+  display: grid;
+  gap: 1rem;
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+}
+
+.concept-list li,
+.concept-card {
+  border: 1px solid #e1e4ec;
+  border-radius: 0.65rem;
+  padding: 1rem;
+}
+
+.concept-list li p {
+  color: #60697c;
+  margin-bottom: 0;
+}
+
+.concept-page button,
+.concept-button {
+  background: #4d5bd4;
+  border: 0;
+  border-radius: 0.55rem;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font: inherit;
+  font-weight: 650;
+  margin: 0.25rem 0.5rem 0.25rem 0;
+  padding: 0.65rem 0.9rem;
+  text-decoration: none;
+}
+
+.concept-value {
+  font-size: 2rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.concept-code {
+  background: #f3f4f8;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  padding: 1rem;
+}
+
+.concept-quote {
+  border-left: 4px solid #5965c9;
+  margin-left: 0;
+  padding-left: 1rem;
+}
+
+.theme-demo {
+  border-radius: 0.75rem;
+  transition: background-color 160ms ease, color 160ms ease;
+}
+
+.theme-demo--dark {
+  background: #202538;
+  color: #f3f4f8;
+}
+
+.theme-demo--dark .concept-eyebrow {
+  color: #aab1ff;
+}
+
+.theme-demo--dark .concept-code {
+  background: #30364b;
+}
+
+.concept-page button:focus-visible,
+.concept-button:focus-visible {
+  outline: 3px solid #8791ff;
+  outline-offset: 3px;
+}
+
+.concept-form {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  max-width: 440px;
+}
+
+.concept-form__field {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.concept-form__field label {
+  font-weight: 650;
+}
+
+.concept-form__field input {
+  border: 1px solid #aeb4c2;
+  border-radius: 0.45rem;
+  font: inherit;
+  padding: 0.65rem 0.75rem;
+}
+
+.concept-form__field input[aria-invalid="true"] {
+  border-color: #b42318;
+}
+
+.concept-form__error {
+  color: #b42318;
+  margin: 0;
+}
+
+.concept-form__success {
+  color: #247340;
+  font-weight: 650;
+  margin: 0;
+}

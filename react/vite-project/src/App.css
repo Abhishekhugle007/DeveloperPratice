@@ -1,0 +1,144 @@
+:root {
+  color: #252b3b;
+  background: #f7f8fc;
+  font-family: system-ui, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+button,
+a {
+  font: inherit;
+}
+
+.site-header {
+  align-items: center;
+  background: #fff;
+  border-bottom: 1px solid #e6e8f0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  justify-content: space-between;
+  padding: 1rem max(1.25rem, calc((100% - 1040px) / 2));
+}
+
+.site-brand {
+  color: #252b3b;
+  font-size: 1.15rem;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.site-nav {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.site-nav a {
+  border-radius: 0.5rem;
+  color: #60697c;
+  padding: 0.55rem 0.75rem;
+  text-decoration: none;
+}
+
+.site-nav a:hover,
+.site-nav a.active {
+  background: #eef0ff;
+  color: #414fca;
+}
+
+.site-main {
+  margin: 0 auto;
+  max-width: 1120px;
+  padding: 2rem 1.25rem 4rem;
+}
+
+.home-page {
+  background: #fff;
+  border: 1px solid #e6e8f0;
+  border-radius: 1rem;
+  margin: 2rem auto;
+  max-width: 900px;
+  padding: clamp(2rem, 7vw, 4.5rem);
+}
+
+.home-page__eyebrow {
+  color: #5965c9;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  margin: 0 0 0.75rem;
+  text-transform: uppercase;
+}
+
+.home-page h1 {
+  font-size: clamp(2.5rem, 7vw, 4rem);
+  letter-spacing: -0.05em;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.home-page__intro {
+  color: #60697c;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin: 1.25rem 0 1.75rem;
+  max-width: 650px;
+}
+
+.home-page__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.home-page__links a {
+  background: #4d5bd4;
+  border-radius: 0.55rem;
+  color: #fff;
+  font-weight: 650;
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+}
+
+.home-page__links a:hover {
+  background: #3e4bb9;
+}
+
+.home-page__links a:focus-visible,
+.site-nav a:focus-visible,
+.site-brand:focus-visible {
+  outline: 3px solid #8791ff;
+  outline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+  .site-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+  }
+
+  .site-nav {
+    margin: 0 -0.5rem;
+  }
+
+  .site-main {
+    padding-top: 1rem;
+  }
+}
