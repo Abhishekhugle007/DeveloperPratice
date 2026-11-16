@@ -6,10 +6,13 @@ import TicTacToePage from './pages/TicTacToePage'
 import ConceptsHomePage from './pages/react-concepts/ConceptsHomePage'
 import DarkModePage from './pages/react-concepts/DarkModePage'
 import DataTransferPage from './pages/react-concepts/DataTransferPage'
+import KeysPropsPage from './pages/react-concepts/KeysPropsPage'
 import MemoizationPage from './pages/react-concepts/MemoizationPage'
 import ReceiveDataPage from './pages/react-concepts/ReceiveDataPage'
+import RefsFormsPage from './pages/react-concepts/RefsFormsPage'
 import ReducerPage from './pages/react-concepts/ReducerPage'
 import RerenderPage from './pages/react-concepts/RerenderPage'
+import StateManagementPage from './pages/react-concepts/StateManagementPage'
 import UseEffectPage from './pages/react-concepts/UseEffectPage'
 import ValidationPage from './pages/react-concepts/ValidationPage'
 import './App.css'
@@ -44,6 +47,9 @@ function App() {
           <Route path="/concepts/reducer" element={<ReducerPage />} />
           <Route path="/concepts/rerenders" element={<RerenderPage />} />
           <Route path="/concepts/memoization" element={<MemoizationPage />} />
+          <Route path="/concepts/state-management" element={<StateManagementPage />} />
+          <Route path="/concepts/keys-and-props" element={<KeysPropsPage />} />
+          <Route path="/concepts/refs-and-forms" element={<RefsFormsPage />} />
           <Route path="/concepts/form-validation" element={<ValidationPage />} />
           <Route path="*" element={<HomePage />} />
         </Routes>

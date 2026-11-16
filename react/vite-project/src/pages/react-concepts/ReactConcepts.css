@@ -2,8 +2,8 @@
   color: #252b3b;
   font-family: system-ui, sans-serif;
   margin: 2rem auto;
-  max-width: 760px;
-  padding: 1.5rem;
+  max-width: 2000px;
+  padding: 2.5rem;
 }
 
 .concept-eyebrow {
@@ -138,4 +138,22 @@
   color: #247340;
   font-weight: 650;
   margin: 0;
+}
+
+.concept-list__row {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.concept-list__row p {
+  margin: 0;
+}
+
+.concept-form__result {
+  background: #f3f4f8;
+  border-radius: 0.5rem;
+  margin-top: 1rem;
+  padding: 1rem;
 }

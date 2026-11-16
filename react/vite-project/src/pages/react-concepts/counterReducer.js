@@ -7,6 +7,6 @@ export function counterReducer(state, action) {
     case 'reset':
       return 0
     default:
-      throw new Error(`Unknown counter action: ${action.type}`)
+      return state
   }
 }

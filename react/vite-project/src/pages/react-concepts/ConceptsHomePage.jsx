@@ -9,6 +9,9 @@ const concepts = [
   { path: 'rerenders', title: 'Understanding rerenders', description: 'See how state changes render a component tree.' },
   { path: 'memoization', title: 'Memoization', description: 'Try React.memo, useMemo, and useCallback.' },
   { path: 'form-validation', title: 'Form validation', description: 'Validate controlled form fields and show accessible errors.' },
+  { path: 'state-management', title: 'State management', description: 'Update component state and see how React renders the result.' },
+  { path: 'keys-and-props', title: 'Keys and props for optimization', description: 'Use stable list keys and memoized props to avoid unnecessary child renders.' },
+  { path: 'refs-and-forms', title: 'React refs and forms', description: 'Focus an input with a ref and handle an uncontrolled form.' },
 ]
 
 function ConceptsHomePage() {
