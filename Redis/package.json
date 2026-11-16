@@ -1,0 +1,14 @@
+{
+  "name": "redis-learning",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A hands-on introduction to Redis data structures and commands",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "lesson": "node index.js"
+  },
+  "dependencies": {
+    "redis": "^5.0.0"
+  }
+}
