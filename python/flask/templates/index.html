@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Home - {{ app_name }}{% endblock %}
+
+{% block content %}
+    <img
+        src="{{ url_for('static', filename='images/images.png') }}"
+        alt="Etech logo"
+        class="course-image"
+    >
+
+    {% if role == "admin" %}
+        <h1>Welcome, Admin {{ name }}!</h1>
+        <p>You have full access to manage the application.</p>
+    {% else %}
+        <h1>Welcome, {{ name }}!</h1>
+        <p>You are signed in as a regular user.</p>
+    {% endif %}
+
+    <h2>Available Courses</h2>
+    <ul>
+        {% for course in courses %}
+            <li>{{ loop.index }}. {{ course }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

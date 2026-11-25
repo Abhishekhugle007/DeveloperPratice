@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Students - {{ app_name }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h2 class="mb-1">Student Management</h2>
+            <p class="text-muted mb-0">{{ total }} student(s)</p>
+        </div>
+        <a class="btn btn-primary" href="{{ url_for('students.create_student') }}">Add Student</a>
+    </div>
+
+    <form class="row g-2 mb-4" action="{{ url_for('students.list_students') }}" method="get">
+        <div class="col-sm-9">
+            <label class="visually-hidden" for="student-search">Search students</label>
+            <input class="form-control" id="student-search" name="q" value="{{ search }}"
+                   placeholder="Search name, email, or course">
+        </div>
+        <div class="col-sm-3 d-flex gap-2">
+            <button class="btn btn-outline-primary" type="submit">Search</button>
+            <a class="btn btn-outline-secondary" href="{{ url_for('students.list_students') }}">Clear</a>
+        </div>
+    </form>
+
+    {% if students %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Course</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                        <tr>
+                            <td>{{ student.name }}</td>
+                            <td>{{ student.email }}</td>
+                            <td>{{ student.course }}</td>
+                            <td class="text-end text-nowrap">
+                                <a class="btn btn-sm btn-outline-primary"
+                                   href="{{ url_for('students.edit_student', student_id=student._id) }}">
+                                    Edit
+                                </a>
+                                <form class="d-inline"
+                                      action="{{ url_for('students.delete_student', student_id=student._id) }}"
+                                      method="post">
+                                    <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info">No students found. Add a student to get started.</div>
+    {% endif %}
+
+    {% if total_pages > 1 %}
+        <nav aria-label="Student pages">
+            <ul class="pagination justify-content-center">
+                <li class="page-item {% if page == 1 %}disabled{% endif %}">
+                    <a class="page-link"
+                       href="{{ url_for('students.list_students', q=search, page=page - 1) }}">Previous</a>
+                </li>
+                {% for page_number in page_numbers %}
+                    <li class="page-item {% if page_number == page %}active{% endif %}">
+                        <a class="page-link"
+                           href="{{ url_for('students.list_students', q=search, page=page_number) }}">
+                            {{ page_number }}
+                        </a>
+                    </li>
+                {% endfor %}
+                <li class="page-item {% if page == total_pages %}disabled{% endif %}">
+                    <a class="page-link"
+                       href="{{ url_for('students.list_students', q=search, page=page + 1) }}">Next</a>
+                </li>
+            </ul>
+        </nav>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}My Todos - {{ app_name }}{% endblock %}
+
+{% block content %}
+    <h2>My Todos</h2>
+
+    <form action="{{ url_for('todos.list_todos') }}" method="post" class="contact-form">
+        <label for="title">Todo:</label>
+        <input type="text" id="title" name="title" value="{{ form_data.title }}"
+               maxlength="120" required>
+
+        <label for="description">Description (optional):</label>
+        <textarea id="description" name="description" rows="3" maxlength="500">{{ form_data.description }}</textarea>
+
+        {% if error %}
+            <p class="field-error" role="alert">{{ error }}</p>
+        {% endif %}
+
+        <button type="submit">Add Todo</button>
+    </form>
+
+    <h3>Todo list</h3>
+    {% if todos %}
+        <ul class="todo-list">
+            {% for todo in todos %}
+                <li class="todo-item {% if todo.completed %}completed{% endif %}">
+                    <div>
+                        <h3>{{ todo.title }}</h3>
+                        {% if todo.description %}
+                            <p>{{ todo.description }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="todo-actions">
+                        <form action="{{ url_for('todos.toggle_todo', todo_id=todo._id) }}" method="post">
+                            <button type="submit">
+                                {% if todo.completed %}Undo{% else %}Complete{% endif %}
+                            </button>
+                        </form>
+                        <a href="{{ url_for('todos.edit_todo', todo_id=todo._id) }}">Edit</a>
+                        <form action="{{ url_for('todos.delete_todo', todo_id=todo._id) }}" method="post">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>You don't have any todos yet.</p>
+    {% endif %}
+{% endblock %}

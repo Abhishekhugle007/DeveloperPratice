@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Todo - {{ app_name }}{% endblock %}
+
+{% block content %}
+    <h2>Edit Todo</h2>
+
+    <form action="" method="post" class="contact-form">
+        <label for="title">Todo:</label>
+        <input type="text" id="title" name="title" value="{{ form_data.title }}"
+               maxlength="120" required>
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" rows="4" maxlength="500">{{ form_data.description }}</textarea>
+
+        {% if error %}
+            <p class="field-error" role="alert">{{ error }}</p>
+        {% endif %}
+
+        <button type="submit">Save Changes</button>
+        <a href="{{ url_for('todos.list_todos') }}">Cancel</a>
+    </form>
+{% endblock %}

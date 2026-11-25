@@ -1,6 +1,8 @@
 {
     "cSpell.words": [
+        "dotenv",
         "jwtpayload",
         "totp"
-    ]
+    ],
+    "python-envs.defaultEnvManager": "ms-python.python:system"
 }

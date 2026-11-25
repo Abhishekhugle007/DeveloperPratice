@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}My Notes - {{ app_name }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h2 class="mb-1">My Notes</h2>
+            <p class="text-muted mb-0">Your notes are private to your account.</p>
+        </div>
+        <a class="btn btn-primary" href="{{ url_for('notes.create_note') }}">New Note</a>
+    </div>
+
+    <form class="row g-2 mb-4" action="{{ url_for('notes.list_notes') }}" method="get">
+        <div class="col-sm-9">
+            <label class="visually-hidden" for="note-search">Search notes</label>
+            <input class="form-control" id="note-search" name="q" value="{{ search }}"
+                   placeholder="Search title or note text">
+        </div>
+        <div class="col-sm-3 d-flex gap-2">
+            <button class="btn btn-outline-primary" type="submit">Search</button>
+            <a class="btn btn-outline-secondary" href="{{ url_for('notes.list_notes') }}">Clear</a>
+        </div>
+    </form>
+
+    {% if notes %}
+        <div class="row g-3">
+            {% for note in notes %}
+                <div class="col-12">
+                    <article class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start gap-3">
+                                <div>
+                                    <h3 class="card-title h5">{{ note.title }}</h3>
+                                    <p class="card-text note-content">{{ note.content }}</p>
+                                </div>
+                                <div class="d-flex gap-2 text-nowrap">
+                                    <a class="btn btn-sm btn-outline-primary"
+                                       href="{{ url_for('notes.edit_note', note_id=note._id) }}">Edit</a>
+                                    <form action="{{ url_for('notes.delete_note', note_id=note._id) }}"
+                                          method="post">
+                                        <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                            {% if note.updated_at %}
+                                <small class="text-muted">
+                                    Updated {{ note.updated_at.strftime('%Y-%m-%d %H:%M') }}
+                                </small>
+                            {% endif %}
+                        </div>
+                    </article>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            {% if search %}No notes match your search.{% else %}You haven't created any notes yet.{% endif %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

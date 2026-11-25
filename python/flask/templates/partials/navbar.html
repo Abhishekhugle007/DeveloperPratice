@@ -1,0 +1,23 @@
+<header>
+    <h1>{{ app_name }}</h1>
+    <nav>
+        <a href="{{ url_for('main.home') }}">Home</a> |
+        <a href="{{ url_for('main.about') }}">About</a> |
+        <a href="{{ url_for('main.contact') }}">Contact</a> |
+        {% if session.get('user_id') %}
+            <a href="{{ url_for('users.dashboard') }}">Dashboard</a> |
+            <a href="{{ url_for('users.users') }}">Users</a> |
+            <a href="{{ url_for('todos.list_todos') }}">Todos</a> |
+            <a href="{{ url_for('students.list_students') }}">Students</a> |
+            <a href="{{ url_for('notes.list_notes') }}">Notes</a> |
+            <span>Welcome, {{ session.get('user_name') }}</span> |
+            <form action="{{ url_for('users.logout') }}" method="post" style="display: inline;">
+                <button type="submit">Logout</button>
+            </form> |
+        {% else %}
+            <a href="{{ url_for('users.login') }}">Login</a> |
+            <a href="{{ url_for('users.register') }}">Register</a> |
+        {% endif %}
+        <a href="{{ url_for('main.storage') }}">Sessions &amp; Cookies</a>
+    </nav>
+</header>

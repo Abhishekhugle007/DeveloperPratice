@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Contact - {{ app_name }}{% endblock %}
+
+{% block content %}
+    <h2>Contact Us</h2>
+    <p>Email: example@email.com</p>
+
+    <form action="{{ url_for('main.contact') }}" method="post" class="contact-form">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" value="{{ form_data.name }}"
+               minlength="2" maxlength="80" required
+               aria-invalid="{{ 'true' if errors.get('name') else 'false' }}">
+        {% if errors.get('name') %}
+            <p class="field-error">{{ errors.name }}</p>
+        {% endif %}
+
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" value="{{ form_data.age }}"
+               min="1" max="120" required
+               aria-invalid="{{ 'true' if errors.get('age') else 'false' }}">
+        {% if errors.get('age') %}
+            <p class="field-error">{{ errors.age }}</p>
+        {% endif %}
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" value="{{ form_data.email }}"
+               maxlength="254" required
+               aria-invalid="{{ 'true' if errors.get('email') else 'false' }}">
+        {% if errors.get('email') %}
+            <p class="field-error">{{ errors.email }}</p>
+        {% endif %}
+
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" rows="5" minlength="10" maxlength="1000"
+                  required aria-invalid="{{ 'true' if errors.get('message') else 'false' }}">{{ form_data.message }}</textarea>
+        {% if errors.get('message') %}
+            <p class="field-error">{{ errors.message }}</p>
+        {% endif %}
+
+        <button type="submit">Send Message</button>
+    </form>
+
+{% endblock %}

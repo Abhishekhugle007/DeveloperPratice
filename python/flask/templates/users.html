@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Users - {{ app_name }}{% endblock %}
+
+{% block content %}
+    <h2>Search Users</h2>
+    <p>Search uses MongoDB <code>$or</code> and <code>$regex</code>. Age limits use <code>$gte</code> and <code>$lte</code>.</p>
+
+    <form action="{{ url_for('users.users') }}" method="get" class="contact-form">
+        <label for="term">Name or email contains:</label>
+        <input type="text" id="term" name="term" value="{{ term }}">
+
+        <label for="min_age">Minimum age:</label>
+        <input type="number" id="min_age" name="min_age" min="1" max="120" value="{{ min_age }}">
+        {% if errors.get('min_age') %}
+            <p class="field-error">{{ errors.min_age }}</p>
+        {% endif %}
+
+        <label for="max_age">Maximum age:</label>
+        <input type="number" id="max_age" name="max_age" min="1" max="120" value="{{ max_age }}">
+        {% if errors.get('max_age') %}
+            <p class="field-error">{{ errors.max_age }}</p>
+        {% endif %}
+
+        <button type="submit">Search</button>
+        <a href="{{ url_for('users.users') }}">Clear filters</a>
+    </form>
+
+    <h3>Matching users</h3>
+    {% if users %}
+        <ul>
+            {% for user in users %}
+                <li>{{ user.name }} — {{ user.email }} — Age {{ user.age }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No matching users found.</p>
+    {% endif %}
+{% endblock %}

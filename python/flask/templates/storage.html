@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Storage Practice - {{ app_name }}{% endblock %}
+
+{% block content %}
+    <h2>Sessions, Cookies, and File Uploads</h2>
+    <p>Enter a name, then choose where Flask should store it.</p>
+
+    <form action="{{ url_for('main.storage') }}" method="post" class="contact-form">
+        <label for="username">Name:</label>
+        <input type="text" id="username" name="username" maxlength="80">
+
+        <button type="submit" name="action" value="set_session">Save in Session</button>
+        <button type="submit" name="action" value="set_cookie">Save in Cookie</button>
+    </form>
+
+    <h3>Stored values</h3>
+    <p>Session: {{ session_username or "Nothing saved" }}</p>
+    <p>Cookie: {{ cookie_username or "Nothing saved" }}</p>
+
+    <form action="{{ url_for('main.storage') }}" method="post">
+        <button type="submit" name="action" value="clear_session">Clear Session</button>
+        <button type="submit" name="action" value="clear_cookie">Clear Cookie</button>
+    </form>
+
+    <h3>Upload a file</h3>
+    <p>Allowed file types: PNG, JPG, GIF, PDF, and TXT. Maximum size: 5 MB.</p>
+    <form action="{{ url_for('main.upload_file') }}" method="post"
+          enctype="multipart/form-data" class="contact-form">
+        <label for="file">Choose a file:</label>
+        <input type="file" id="file" name="file"
+               accept=".png,.jpg,.jpeg,.gif,.pdf,.txt" required>
+        <button type="submit">Upload File</button>
+    </form>
+{% endblock %}

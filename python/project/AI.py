@@ -43,7 +43,6 @@ def getResponseBot(userQuestion):
 
     return "I am not able to tell that yet . MAI JADLI HI YE SIKH LUNGA"
 
-
 while True:
     userInput = input("please ask me question:")
     reply = getResponseBot(userInput)
